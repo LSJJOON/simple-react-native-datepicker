@@ -6,19 +6,21 @@
  * @flow
  */
 
-import React from 'react';
+import React, { Component } from 'react';
 import {
-  View,
+	View,
+	SafeAreaView,
 } from 'react-native';
+import DatePicker from './datepicker'
 
-import SampleComponent from '@lsj/react-native-datepicker';
-
-const App: () => React$Node = () => {
-  return (
-    <View>
-      <SampleComponent text={'demo'}/>
-    </View>
-  );
-};
+class App extends Component {
+	render () {
+		return (
+			<SafeAreaView>
+      	<DatePicker />
+    	</SafeAreaView>
+		);
+	}
+}
 
 export default App;

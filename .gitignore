@@ -130,3 +130,10 @@ project.xcworkspace
 .project
 .settings
 .classpath
+
+# Android
+.idea
+.gradle
+local.properties
+*.iml
+/android/

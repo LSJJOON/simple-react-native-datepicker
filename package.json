@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "description": "React Native date & time picker component for iOS and Android, Use react-native-community / react-native-datetimepicker",
   "main": "build/datepicker.js",
-  "module": "build/datepicker.es.js",
-  "jsnext:main": "build/datepicker.es.js",
   "scripts": {
     "test": "jest",
     "build": "tsc"
@@ -26,14 +24,20 @@
     "@types/jest": "^25.1.3",
     "@types/react": "^16.9.21",
     "@types/react-dom": "^16.9.5",
+    "@types/react-native": "^0.61.16",
     "@types/react-test-renderer": "^16.9.2",
     "jest": "^25.1.0",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0",
+    "react-native": "^0.61.5",
     "react-scripts-ts": "^3.1.0",
     "react-test-renderer": "^16.12.0",
     "ts-jest": "^25.2.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.8.2"
+  },
+  "peerDependencies": {
+    "react": "^16.12.0",
+    "react-native": "^0.61.5",
+    "moment": "^2.24.0"
   },
   "jest": {
     "preset": "ts-jest",
@@ -42,5 +46,8 @@
       "/demo/",
       "/build/"
     ]
+  },
+  "dependencies": {
+    "moment": "^2.24.0"
   }
 }
