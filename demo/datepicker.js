@@ -12,11 +12,31 @@ import React, { Component } from 'react';
 import { View, Text, Image, Modal, TouchableHighlight, DatePickerAndroid, TimePickerAndroid, DatePickerIOS, Platform, Animated, Keyboard } from 'react-native';
 import Style from './style';
 import moment from 'moment';
-var FORMATS = {
-	'date': 'YYYY-MM-DD',
-	'datetime': 'YYYY-MM-DD HH:mm',
-	'time': 'HH:mm'
-};
+export var Mode;
+(function (Mode) {
+	Mode["date"] = "date";
+	Mode["datetime"] = "datetime";
+	Mode["time"] = "time";
+})(Mode || (Mode = {}));
+;
+export var AndroidMode;
+(function (AndroidMode) {
+	AndroidMode["default"] = "default";
+	AndroidMode["calendar"] = "calendar";
+	AndroidMode["spinner"] = "spinner";
+})(AndroidMode || (AndroidMode = {}));
+export var Format;
+(function (Format) {
+	Format["date"] = "YYYY-MM-DD";
+	Format["datetime"] = "YYYY-MM-DD HH:mm";
+	Format["time"] = "HH:mm";
+})(Format || (Format = {}));
+export var SupportedOrientations;
+(function (SupportedOrientations) {
+	SupportedOrientations["portrait"] = "portrait";
+	SupportedOrientations["portraitUpsideDown"] = "portrait-upside-down";
+	SupportedOrientations["landscape"] = "landscape";
+})(SupportedOrientations || (SupportedOrientations = {}));
 var SUPPORTED_ORIENTATIONS = ['portrait', 'portrait-upside-down', 'landscape', 'landscape-left', 'landscape-right'];
 var DatePicker = /** @class */ (function (_super) {
 	__extends(DatePicker, _super);
@@ -81,12 +101,12 @@ var DatePicker = /** @class */ (function (_super) {
 					});
 			}
 	};
-	DatePicker.prototype.onStartShouldSetResponder = function (e) {
-			return true;
-	};
-	DatePicker.prototype.onMoveShouldSetResponder = function (e) {
-			return true;
-	};
+	// onStartShouldSetResponder(e) {
+	//   return true;
+	// }
+	// onMoveShouldSetResponder(e) {
+	//   return true;
+	// }
 	DatePicker.prototype.onPressMask = function () {
 			if (typeof this.props.onPressMask === 'function') {
 					this.props.onPressMask();
@@ -110,7 +130,7 @@ var DatePicker = /** @class */ (function (_super) {
 	};
 	DatePicker.prototype.getDate = function (date) {
 			if (date === void 0) { date = this.props.date; }
-			var _a = this.props, mode = _a.mode, minDate = _a.minDate, maxDate = _a.maxDate, _b = _a.format, format = _b === void 0 ? FORMATS[mode] : _b;
+			var _a = this.props, mode = _a.mode, minDate = _a.minDate, maxDate = _a.maxDate, _b = _a.format, format = _b === void 0 ? Format[mode] : _b;
 			if (!date) {
 					var now = new Date();
 					if (minDate) {
@@ -134,7 +154,7 @@ var DatePicker = /** @class */ (function (_super) {
 	};
 	DatePicker.prototype.getDateStr = function (date) {
 			if (date === void 0) { date = this.props.date; }
-			var _a = this.props, mode = _a.mode, _b = _a.format, format = _b === void 0 ? FORMATS[mode] : _b;
+			var _a = this.props, mode = _a.mode, _b = _a.format, format = _b === void 0 ? Format[mode] : _b;
 			var dateInstance = date instanceof Date
 					? date
 					: this.getDate(date);
@@ -194,7 +214,7 @@ var DatePicker = /** @class */ (function (_super) {
 	};
 	DatePicker.prototype.onDatetimePicked = function (_a) {
 			var action = _a.action, year = _a.year, month = _a.month, day = _a.day;
-			var _b = this.props, mode = _b.mode, androidMode = _b.androidMode, _c = _b.format, format = _c === void 0 ? FORMATS[mode] : _c, _d = _b.is24Hour, is24Hour = _d === void 0 ? !format.match(/h|a/) : _d;
+			var _b = this.props, mode = _b.mode, androidMode = _b.androidMode, _c = _b.format, format = _c === void 0 ? Format[mode] : _c, _d = _b.is24Hour, is24Hour = _d === void 0 ? !format.match(/h|a/) : _d;
 			if (action !== DatePickerAndroid.dismissedAction) {
 					var timeMoment = moment(this.state.date);
 					TimePickerAndroid.open({
@@ -233,7 +253,7 @@ var DatePicker = /** @class */ (function (_super) {
 					this.setModalVisible(true);
 			}
 			else {
-					var _a = this.props, mode = _a.mode, androidMode = _a.androidMode, _b = _a.format, format = _b === void 0 ? FORMATS[mode] : _b, minDate = _a.minDate, maxDate = _a.maxDate, _c = _a.is24Hour, is24Hour = _c === void 0 ? !format.match(/h|a/) : _c;
+					var _a = this.props, mode = _a.mode, androidMode = _a.androidMode, _b = _a.format, format = _b === void 0 ? Format[mode] : _b, minDate = _a.minDate, maxDate = _a.maxDate, _c = _a.is24Hour, is24Hour = _c === void 0 ? !format.match(/h|a/) : _c;
 					if (mode === 'date') {
 							DatePickerAndroid.open({
 									date: this.state.date,
@@ -306,28 +326,27 @@ var DatePicker = /** @class */ (function (_super) {
 																			React.createElement(TouchableComponent, { underlayColor: 'transparent', onPress: this.onPressConfirm, style: [Style.btnText, Style.btnConfirm, customStyles.btnConfirm], testID: confirmBtnTestID },
 																					React.createElement(Text, { allowFontScaling: allowFontScaling, style: [Style.btnTextText, customStyles.btnTextConfirm] }, confirmBtnText)))))))))));
 	};
+	DatePicker.defaultProps = {
+			mode: 'date',
+			androidMode: 'default',
+			date: '',
+			height: 259,
+			// slide animation duration time, default to 300ms, IOS only
+			duration: 300,
+			confirmBtnText: 'Confirm',
+			cancelBtnText: 'Cancel',
+			iconSource: require('./date_icon.png'),
+			customStyles: {},
+			// whether or not show the icon
+			showIcon: true,
+			disabled: false,
+			allowFontScaling: true,
+			hideText: false,
+			placeholder: '',
+			TouchableComponent: TouchableHighlight,
+			modalOnResponderTerminationRequest: function () { return true; }
+	};
 	return DatePicker;
 }(Component));
-DatePicker.defaultProps = {
-	mode: 'date',
-	androidMode: 'default',
-	date: '',
-	// component height: 216(DatePickerIOS) + 1(borderTop) + 42(marginTop), IOS only
-	height: 259,
-	// slide animation duration time, default to 300ms, IOS only
-	duration: 300,
-	confirmBtnText: 'Confirm',
-	cancelBtnText: 'Cancel',
-	iconSource: require('./date_icon.png'),
-	customStyles: {},
-	// whether or not show the icon
-	showIcon: true,
-	disabled: false,
-	allowFontScaling: true,
-	hideText: false,
-	placeholder: '',
-	TouchableComponent: TouchableHighlight,
-	modalOnResponderTerminationRequest: function (e) { return true; }
-};
 export default DatePicker;
 //# sourceMappingURL=datepicker.js.map
