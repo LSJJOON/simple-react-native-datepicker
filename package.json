@@ -5,7 +5,7 @@
   "main": "build/datepicker.js",
   "scripts": {
     "test": "jest",
-    "build": "tsc"
+    "build": "npx tsc"
   },
   "repository": {
     "type": "git",
