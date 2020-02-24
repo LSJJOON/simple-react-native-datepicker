@@ -1,13 +1,14 @@
-import React, { Component } from 'react';
+import React, { Component, ComponentClass } from 'react';
 import {
 	View,
 	Text,
 	Image,
 	Modal,
 	TouchableHighlight,
-	TouchableNativeFeedback,
-	TouchableOpacity,
-	TouchableWithoutFeedback,
+	TouchableHighlightProps,
+	TouchableNativeFeedbackProps,
+	TouchableOpacityProps,
+	TouchableWithoutFeedbackProps,
 	DatePickerAndroid,
 	TimePickerAndroid,
 	DatePickerIOS,
@@ -18,8 +19,6 @@ import {
 	ImageStyle,
 	TextStyle,
 	StyleProp,
-	DatePickerAndroidOpenReturn,
-	TimePickerAndroidOpenReturn,
 	ImageSourcePropType,
 } from 'react-native';
 import Style from './style';
@@ -97,6 +96,18 @@ export enum Format {
 	time = 'HH:mm',
 }
 
+interface IDatePickerAndroidOpenReturn {
+	action: 'dateSetAction' | 'dismissedAction';
+	year?: number;
+	month?: number;
+	day?: number;
+}
+interface ITimePickerAndroidOpenReturn {
+	action: 'timeSetAction' | 'dismissedAction';
+	hour?: number;
+	minute?: number;
+}
+
 interface IState {
 	date: Date;
 	modalVisible: boolean;
@@ -114,7 +125,10 @@ const SUPPORTED_ORIENTATIONS: SupportedOrientations[] = [
 ];
 
 type SupportedOrientations = 'portrait' | 'portrait-upside-down' | 'landscape' | 'landscape-left' | 'landscape-right';
-type Touchable = TouchableHighlight | TouchableNativeFeedback | TouchableOpacity | TouchableWithoutFeedback;
+type Touchable = ComponentClass<TouchableHighlightProps> |
+	ComponentClass<TouchableNativeFeedbackProps> |
+	ComponentClass<TouchableOpacityProps> |
+	ComponentClass<TouchableWithoutFeedbackProps>;
 type MinuteInterval = 1 | 2 | 3 | 4 | 5 | 6 | 10 | 12 | 15 | 20 | 30 | undefined;
 
 class DatePicker extends Component<IProps> {
@@ -448,8 +462,8 @@ class DatePicker extends Component<IProps> {
 		}, 200);
 	}
 
-	private onDatePicked({action, year, month, day}: DatePickerAndroidOpenReturn) {
-		if (action !== DatePickerAndroid.dismissedAction) {
+	private onDatePicked({ action, year, month, day }: IDatePickerAndroidOpenReturn) {
+		if (action !== DatePickerAndroid.dismissedAction && year && month && day) {
 			this.setState({
 				date: new Date(year, month, day),
 			});
@@ -459,8 +473,8 @@ class DatePicker extends Component<IProps> {
 		}
 	}
 
-	private onTimePicked({action, hour, minute}: TimePickerAndroidOpenReturn) {
-		if (action !== DatePickerAndroid.dismissedAction) {
+	private onTimePicked({action, hour, minute}: ITimePickerAndroidOpenReturn) {
+		if (action !== DatePickerAndroid.dismissedAction && hour && minute) {
 			this.setState({
 				date: moment().hour(hour).minute(minute).toDate(),
 			});
@@ -470,7 +484,7 @@ class DatePicker extends Component<IProps> {
 		}
 	}
 
-	private async onDatetimePicked({action, year, month, day}: DatePickerAndroidOpenReturn) {
+	private async onDatetimePicked({action, year, month, day}: IDatePickerAndroidOpenReturn) {
 		const {mode, androidTimeMode, format = Format[mode], is24Hour = !format.match(/h|a/)} = this.props;
 
 		if (action !== DatePickerAndroid.dismissedAction) {
@@ -489,7 +503,9 @@ class DatePicker extends Component<IProps> {
 		}
 	}
 
-	private onDatetimeTimePicked(year: number, month: number, day: number, timePickerResult: TimePickerAndroidOpenReturn) {
+	private onDatetimeTimePicked(
+		year: number, month: number, day: number, timePickerResult: ITimePickerAndroidOpenReturn,
+	) {
 		const {action, hour, minute} = timePickerResult;
 		if (action !== DatePickerAndroid.dismissedAction) {
 			this.setState({
