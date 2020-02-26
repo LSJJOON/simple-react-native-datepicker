@@ -1,5 +1,5 @@
-import { Component } from 'react';
-import { TouchableHighlight, TouchableNativeFeedback, TouchableOpacity, TouchableWithoutFeedback, Animated, ViewStyle, TextStyle, StyleProp, DatePickerAndroidOpenReturn, TimePickerAndroidOpenReturn } from 'react-native';
+import { Component, ComponentClass } from 'react';
+import { TouchableHighlight, TouchableHighlightProps, TouchableNativeFeedbackProps, TouchableOpacityProps, TouchableWithoutFeedbackProps, Animated, ViewStyle, ImageStyle, TextStyle, StyleProp, ImageSourcePropType } from 'react-native';
 interface IProps {
     style: StyleProp<ViewStyle>;
     height: number;
@@ -13,7 +13,7 @@ interface IProps {
     androidTimeMode: AndroidTimeMode;
     confirmBtnText: string;
     cancelBtnText: string;
-    customStyles: CustomStyles;
+    customStyles: ICustomStyles;
     showIcon: boolean;
     disabled: boolean;
     allowFontScaling: boolean;
@@ -21,12 +21,18 @@ interface IProps {
     placeholder: string;
     TouchableComponent: Touchable;
     is24Hour?: boolean;
+    iconSource?: ImageSourcePropType;
+    minuteInterval?: MinuteInterval;
+    timeZoneOffsetInMinutes?: number;
+    locale?: string;
+    iconComponent?: Component;
     getDateStr: (date: Date) => string;
     onDateChange: (dateStr: string, date: Date | string) => any;
-    onPressMask: Function | undefined;
-    onCloseModal: Function | undefined;
+    onPressMask?: () => void;
+    onCloseModal?: () => void;
+    onOpenModal?: () => void;
 }
-interface CustomStyles {
+interface ICustomStyles {
     placeholderText: StyleProp<TextStyle>;
     dateText: StyleProp<TextStyle>;
     btnTextConfirm: StyleProp<TextStyle>;
@@ -34,8 +40,12 @@ interface CustomStyles {
     btnTextCancel: StyleProp<TextStyle>;
     btnCancel: StyleProp<ViewStyle>;
     datePicker: StyleProp<ViewStyle>;
+    dateIcon: StyleProp<ImageStyle>;
+    datePickerCon: StyleProp<ViewStyle>;
+    dateInput: StyleProp<ViewStyle>;
+    disabled: StyleProp<ViewStyle>;
+    dateTouchBody: StyleProp<ViewStyle>;
 }
-declare type Touchable = TouchableHighlight | TouchableNativeFeedback | TouchableOpacity | TouchableWithoutFeedback;
 export declare enum Mode {
     date = "date",
     datetime = "datetime",
@@ -63,8 +73,9 @@ interface IState {
     opacity: Animated.Value;
     allowPointerEvents: boolean;
 }
+declare type Touchable = ComponentClass<TouchableHighlightProps> | ComponentClass<TouchableNativeFeedbackProps> | ComponentClass<TouchableOpacityProps> | ComponentClass<TouchableWithoutFeedbackProps>;
+declare type MinuteInterval = 1 | 2 | 3 | 4 | 5 | 6 | 10 | 12 | 15 | 20 | 30 | undefined;
 declare class DatePicker extends Component<IProps> {
-    readonly state: IState;
     static defaultProps: {
         mode: string;
         androidDatetimeMode: AndroidDatetimeMode;
@@ -84,23 +95,24 @@ declare class DatePicker extends Component<IProps> {
         TouchableComponent: typeof TouchableHighlight;
         modalOnResponderTerminationRequest: () => boolean;
     };
+    readonly state: IState;
     constructor(props: IProps);
-    UNSAFE_componentWillReceiveProps(nextProps: IProps): void;
-    setModalVisible(visible: boolean): void;
-    onPressMask(): void;
-    onPressCancel(): void;
-    onPressConfirm(): void;
-    getDate(date?: string | Date): Date;
-    getDateStr(date?: string | Date): string;
-    datePicked(): void;
-    getTitleElement(): JSX.Element;
-    onDateChange(date: Date): void;
-    onDatePicked({ action, year, month, day }: DatePickerAndroidOpenReturn): void;
-    onTimePicked({ action, hour, minute }: TimePickerAndroidOpenReturn): void;
-    onDatetimePicked({ action, year, month, day }: DatePickerAndroidOpenReturn): Promise<void>;
-    onDatetimeTimePicked(year: number, month: number, day: number, { action, hour, minute }: TimePickerAndroidOpenReturn): void;
-    onPressDate(): Promise<true | undefined>;
-    _renderIcon(): any;
     render(): JSX.Element;
+    UNSAFE_componentWillReceiveProps(nextProps: IProps): void;
+    private setModalVisible;
+    private onPressMask;
+    private onPressCancel;
+    private onPressConfirm;
+    private getDate;
+    private getDateStr;
+    private datePicked;
+    private getTitleElement;
+    private onDateChange;
+    private onDatePicked;
+    private onTimePicked;
+    private onDatetimePicked;
+    private onDatetimeTimePicked;
+    private onPressDate;
+    private _renderIcon;
 }
 export default DatePicker;

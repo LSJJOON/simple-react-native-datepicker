@@ -57,7 +57,6 @@ export var Mode;
     Mode["datetime"] = "datetime";
     Mode["time"] = "time";
 })(Mode || (Mode = {}));
-;
 export var AndroidDatetimeMode;
 (function (AndroidDatetimeMode) {
     AndroidDatetimeMode["default"] = "default";
@@ -76,20 +75,12 @@ export var Format;
     Format["datetime"] = "YYYY-MM-DD HH:mm";
     Format["time"] = "HH:mm";
 })(Format || (Format = {}));
-var SupportedOrientations;
-(function (SupportedOrientations) {
-    SupportedOrientations["portrait"] = "portrait";
-    SupportedOrientations["portraitUpsideDown"] = "portrait-upside-down";
-    SupportedOrientations["landscape"] = "landscape";
-    SupportedOrientations["landscapeLeft"] = "landscape-left";
-    SupportedOrientations["landscapeRight"] = "landscape-right";
-})(SupportedOrientations || (SupportedOrientations = {}));
 var SUPPORTED_ORIENTATIONS = [
-    SupportedOrientations.portrait,
-    SupportedOrientations.portraitUpsideDown,
-    SupportedOrientations.landscape,
-    SupportedOrientations.landscapeLeft,
-    SupportedOrientations.landscapeRight,
+    'portrait',
+    'portrait-upside-down',
+    'landscape',
+    'landscape-left',
+    'landscape-right',
 ];
 var DatePicker = /** @class */ (function (_super) {
     __extends(DatePicker, _super);
@@ -100,7 +91,7 @@ var DatePicker = /** @class */ (function (_super) {
             modalVisible: false,
             animatedHeight: new Animated.Value(props.height),
             opacity: new Animated.Value(0),
-            allowPointerEvents: true
+            allowPointerEvents: true,
         };
         _this.getDate = _this.getDate.bind(_this);
         _this.getDateStr = _this.getDateStr.bind(_this);
@@ -117,6 +108,38 @@ var DatePicker = /** @class */ (function (_super) {
         _this.setModalVisible = _this.setModalVisible.bind(_this);
         return _this;
     }
+    DatePicker.prototype.render = function () {
+        var _this = this;
+        var _a = this.props, mode = _a.mode, style = _a.style, customStyles = _a.customStyles, disabled = _a.disabled, minDate = _a.minDate, maxDate = _a.maxDate, minuteInterval = _a.minuteInterval, timeZoneOffsetInMinutes = _a.timeZoneOffsetInMinutes, cancelBtnText = _a.cancelBtnText, confirmBtnText = _a.confirmBtnText, TouchableComponent = _a.TouchableComponent, allowFontScaling = _a.allowFontScaling, locale = _a.locale, height = _a.height;
+        var dateInputStyle = [
+            Style.dateInput, customStyles.dateInput,
+            disabled && Style.disabled,
+            disabled && customStyles.disabled,
+        ];
+        return (React.createElement(TouchableComponent, { style: [Style.dateTouch, style], underlayColor: 'transparent', onPress: this.onPressDate },
+            React.createElement(View, { style: [Style.dateTouchBody, customStyles.dateTouchBody] },
+                !this.props.hideText ?
+                    React.createElement(View, { style: dateInputStyle }, this.getTitleElement())
+                    :
+                        React.createElement(View, null),
+                this._renderIcon(),
+                Platform.OS === 'ios' && React.createElement(Modal, { transparent: true, animationType: "none", visible: this.state.modalVisible, supportedOrientations: SUPPORTED_ORIENTATIONS, onRequestClose: function () { _this.setModalVisible(false); } },
+                    React.createElement(View, { style: { flex: 1 } },
+                        React.createElement(Animated.View, { style: { flex: 1, opacity: this.state.opacity } },
+                            React.createElement(TouchableComponent, { style: Style.datePickerMask, activeOpacity: 1, underlayColor: '#00000077', onPress: this.onPressMask },
+                                React.createElement(TouchableComponent, { underlayColor: '#fff', style: { flex: 1 } },
+                                    React.createElement(Animated.View, { style: [
+                                            Style.datePickerCon,
+                                            { height: height, transform: [{ translateY: this.state.animatedHeight }] },
+                                            customStyles.datePickerCon,
+                                        ] },
+                                        React.createElement(View, { pointerEvents: this.state.allowPointerEvents ? 'auto' : 'none' },
+                                            React.createElement(DatePickerIOS, { date: this.state.date, mode: mode, minimumDate: minDate ? this.getDate(minDate) : undefined, maximumDate: maxDate ? this.getDate(maxDate) : undefined, onDateChange: this.onDateChange, minuteInterval: minuteInterval, timeZoneOffsetInMinutes: timeZoneOffsetInMinutes ? timeZoneOffsetInMinutes : undefined, style: [Style.datePicker, customStyles.datePicker], locale: locale })),
+                                        React.createElement(TouchableComponent, { underlayColor: 'transparent', onPress: this.onPressCancel, style: [Style.btnText, Style.btnCancel, customStyles.btnCancel] },
+                                            React.createElement(Text, { allowFontScaling: allowFontScaling, style: [Style.btnTextText, Style.btnTextCancel, customStyles.btnTextCancel] }, cancelBtnText)),
+                                        React.createElement(TouchableComponent, { underlayColor: 'transparent', onPress: this.onPressConfirm, style: [Style.btnText, Style.btnConfirm, customStyles.btnConfirm] },
+                                            React.createElement(Text, { allowFontScaling: allowFontScaling, style: [Style.btnTextText, customStyles.btnTextConfirm] }, confirmBtnText)))))))))));
+    };
     DatePicker.prototype.UNSAFE_componentWillReceiveProps = function (nextProps) {
         if (nextProps.date !== this.props.date) {
             this.setState({ date: this.getDate(nextProps.date) });
@@ -131,24 +154,24 @@ var DatePicker = /** @class */ (function (_super) {
             Animated.parallel([
                 Animated.timing(this.state.animatedHeight, {
                     toValue: 0,
-                    duration: duration
+                    duration: duration,
                 }),
                 Animated.timing(this.state.opacity, {
                     toValue: 1,
-                    duration: duration
-                })
+                    duration: duration,
+                }),
             ]).start();
         }
         else {
             Animated.parallel([
                 Animated.timing(this.state.animatedHeight, {
                     toValue: height,
-                    duration: duration
+                    duration: duration,
                 }),
                 Animated.timing(this.state.opacity, {
                     toValue: 0,
-                    duration: duration
-                })
+                    duration: duration,
+                }),
             ]).start(function () {
                 _this.setState({ modalVisible: visible });
             });
@@ -187,15 +210,15 @@ var DatePicker = /** @class */ (function (_super) {
         if (!date) {
             var now = new Date();
             if (minDate) {
-                var _minDate = this.getDate(minDate);
-                if (now < _minDate) {
-                    return _minDate;
+                var minDateInstance = this.getDate(minDate);
+                if (now < minDateInstance) {
+                    return minDateInstance;
                 }
             }
             if (maxDate) {
-                var _maxDate = this.getDate(maxDate);
-                if (now > _maxDate) {
-                    return _maxDate;
+                var maxDateInstance = this.getDate(maxDate);
+                if (now > maxDateInstance) {
+                    return maxDateInstance;
                 }
             }
             return now;
@@ -232,20 +255,20 @@ var DatePicker = /** @class */ (function (_super) {
         var _this = this;
         this.setState({
             allowPointerEvents: false,
-            date: date
+            date: date,
         });
         var timeoutId = setTimeout(function () {
             _this.setState({
-                allowPointerEvents: true
+                allowPointerEvents: true,
             });
             clearTimeout(timeoutId);
         }, 200);
     };
     DatePicker.prototype.onDatePicked = function (_a) {
         var action = _a.action, year = _a.year, month = _a.month, day = _a.day;
-        if (action !== DatePickerAndroid.dismissedAction) {
+        if (action !== DatePickerAndroid.dismissedAction && year && month && day) {
             this.setState({
-                date: new Date(year, month, day)
+                date: new Date(year, month, day),
             });
             this.datePicked();
         }
@@ -255,9 +278,9 @@ var DatePicker = /** @class */ (function (_super) {
     };
     DatePicker.prototype.onTimePicked = function (_a) {
         var action = _a.action, hour = _a.hour, minute = _a.minute;
-        if (action !== DatePickerAndroid.dismissedAction) {
+        if (action !== DatePickerAndroid.dismissedAction && hour && minute) {
             this.setState({
-                date: moment().hour(hour).minute(minute).toDate()
+                date: moment().hour(hour).minute(minute).toDate(),
             });
             this.datePicked();
         }
@@ -268,7 +291,7 @@ var DatePicker = /** @class */ (function (_super) {
     DatePicker.prototype.onDatetimePicked = function (_a) {
         var action = _a.action, year = _a.year, month = _a.month, day = _a.day;
         return __awaiter(this, void 0, void 0, function () {
-            var _b, mode, androidTimeMode, _c, format, _d, is24Hour, timeMoment, result;
+            var _b, mode, androidTimeMode, _c, format, _d, is24Hour, timeMoment, timePickerResult, args;
             return __generator(this, function (_e) {
                 switch (_e.label) {
                     case 0:
@@ -279,11 +302,12 @@ var DatePicker = /** @class */ (function (_super) {
                                 hour: timeMoment.hour(),
                                 minute: timeMoment.minutes(),
                                 is24Hour: is24Hour,
-                                mode: androidTimeMode
+                                mode: androidTimeMode,
                             })];
                     case 1:
-                        result = _e.sent();
-                        this.onDatetimeTimePicked.call(this, year, month, day, result);
+                        timePickerResult = _e.sent();
+                        args = { year: year, month: month, day: day, timePickerResult: timePickerResult };
+                        this.onDatetimeTimePicked.call(this, args);
                         return [3 /*break*/, 3];
                     case 2:
                         this.onPressCancel();
@@ -293,11 +317,11 @@ var DatePicker = /** @class */ (function (_super) {
             });
         });
     };
-    DatePicker.prototype.onDatetimeTimePicked = function (year, month, day, _a) {
-        var action = _a.action, hour = _a.hour, minute = _a.minute;
+    DatePicker.prototype.onDatetimeTimePicked = function (year, month, day, timePickerResult) {
+        var action = timePickerResult.action, hour = timePickerResult.hour, minute = timePickerResult.minute;
         if (action !== DatePickerAndroid.dismissedAction) {
             this.setState({
-                date: new Date(year, month, day, hour, minute)
+                date: new Date(year, month, day, hour, minute),
             });
             this.datePicked();
         }
@@ -312,12 +336,12 @@ var DatePicker = /** @class */ (function (_super) {
                 switch (_d.label) {
                     case 0:
                         if (this.props.disabled) {
-                            return [2 /*return*/, true];
+                            return [2 /*return*/];
                         }
                         Keyboard.dismiss();
                         // reset state
                         this.setState({
-                            date: this.getDate()
+                            date: this.getDate(),
                         });
                         if (!(Platform.OS === 'ios')) return [3 /*break*/, 1];
                         this.setModalVisible(true);
@@ -329,7 +353,7 @@ var DatePicker = /** @class */ (function (_super) {
                                 date: this.state.date,
                                 minDate: minDate ? this.getDate(minDate) : undefined,
                                 maxDate: maxDate ? this.getDate(maxDate) : undefined,
-                                mode: androidDatetimeMode
+                                mode: androidDatetimeMode,
                             })];
                     case 2:
                         result = _d.sent();
@@ -342,7 +366,7 @@ var DatePicker = /** @class */ (function (_super) {
                                 hour: timeMoment.hour(),
                                 minute: timeMoment.minutes(),
                                 is24Hour: is24Hour,
-                                mode: androidTimeMode
+                                mode: androidTimeMode,
                             })];
                     case 4:
                         result = _d.sent();
@@ -354,7 +378,7 @@ var DatePicker = /** @class */ (function (_super) {
                                 date: this.state.date,
                                 minDate: minDate ? this.getDate(minDate) : undefined,
                                 maxDate: maxDate ? this.getDate(maxDate) : undefined,
-                                mode: androidDatetimeMode
+                                mode: androidDatetimeMode,
                             })];
                     case 6:
                         result = _d.sent();
@@ -375,41 +399,9 @@ var DatePicker = /** @class */ (function (_super) {
             if (iconComponent) {
                 return iconComponent;
             }
-            return (React.createElement(Image, { style: [Style.dateIcon, customStyles.dateIcon], source: iconSource }));
+            return (React.createElement(Image, { style: [Style.dateIcon, customStyles.dateIcon], source: iconSource || require('./date_icon.png') }));
         }
         return null;
-    };
-    DatePicker.prototype.render = function () {
-        var _this = this;
-        var _a = this.props, mode = _a.mode, style = _a.style, customStyles = _a.customStyles, disabled = _a.disabled, minDate = _a.minDate, maxDate = _a.maxDate, minuteInterval = _a.minuteInterval, timeZoneOffsetInMinutes = _a.timeZoneOffsetInMinutes, cancelBtnText = _a.cancelBtnText, confirmBtnText = _a.confirmBtnText, TouchableComponent = _a.TouchableComponent, testID = _a.testID, cancelBtnTestID = _a.cancelBtnTestID, confirmBtnTestID = _a.confirmBtnTestID, allowFontScaling = _a.allowFontScaling, locale = _a.locale, height = _a.height;
-        var dateInputStyle = [
-            Style.dateInput, customStyles.dateInput,
-            disabled && Style.disabled,
-            disabled && customStyles.disabled
-        ];
-        return (React.createElement(TouchableComponent, { style: [Style.dateTouch, style], underlayColor: 'transparent', onPress: this.onPressDate, testID: testID },
-            React.createElement(View, { style: [Style.dateTouchBody, customStyles.dateTouchBody] },
-                !this.props.hideText ?
-                    React.createElement(View, { style: dateInputStyle }, this.getTitleElement())
-                    :
-                        React.createElement(View, null),
-                this._renderIcon(),
-                Platform.OS === 'ios' && React.createElement(Modal, { transparent: true, animationType: "none", visible: this.state.modalVisible, supportedOrientations: SUPPORTED_ORIENTATIONS, onRequestClose: function () { _this.setModalVisible(false); } },
-                    React.createElement(View, { style: { flex: 1 } },
-                        React.createElement(Animated.View, { style: { flex: 1, opacity: this.state.opacity } },
-                            React.createElement(TouchableComponent, { style: Style.datePickerMask, activeOpacity: 1, underlayColor: '#00000077', onPress: this.onPressMask },
-                                React.createElement(TouchableComponent, { underlayColor: '#fff', style: { flex: 1 } },
-                                    React.createElement(Animated.View, { style: [
-                                            Style.datePickerCon,
-                                            { height: height, transform: [{ translateY: this.state.animatedHeight }] },
-                                            customStyles.datePickerCon
-                                        ] },
-                                        React.createElement(View, { pointerEvents: this.state.allowPointerEvents ? 'auto' : 'none' },
-                                            React.createElement(DatePickerIOS, { date: this.state.date, mode: mode, minimumDate: minDate ? this.getDate(minDate) : undefined, maximumDate: maxDate ? this.getDate(maxDate) : undefined, onDateChange: this.onDateChange, minuteInterval: minuteInterval, timeZoneOffsetInMinutes: timeZoneOffsetInMinutes ? timeZoneOffsetInMinutes : null, style: [Style.datePicker, customStyles.datePicker], locale: locale })),
-                                        React.createElement(TouchableComponent, { underlayColor: 'transparent', onPress: this.onPressCancel, style: [Style.btnText, Style.btnCancel, customStyles.btnCancel], testID: cancelBtnTestID },
-                                            React.createElement(Text, { allowFontScaling: allowFontScaling, style: [Style.btnTextText, Style.btnTextCancel, customStyles.btnTextCancel] }, cancelBtnText)),
-                                        React.createElement(TouchableComponent, { underlayColor: 'transparent', onPress: this.onPressConfirm, style: [Style.btnText, Style.btnConfirm, customStyles.btnConfirm], testID: confirmBtnTestID },
-                                            React.createElement(Text, { allowFontScaling: allowFontScaling, style: [Style.btnTextText, customStyles.btnTextConfirm] }, confirmBtnText)))))))))));
     };
     DatePicker.defaultProps = {
         mode: 'date',
@@ -430,7 +422,7 @@ var DatePicker = /** @class */ (function (_super) {
         hideText: false,
         placeholder: '',
         TouchableComponent: TouchableHighlight,
-        modalOnResponderTerminationRequest: function () { return true; }
+        modalOnResponderTerminationRequest: function () { return true; },
     };
     return DatePicker;
 }(Component));
