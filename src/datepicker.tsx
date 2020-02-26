@@ -1,4 +1,4 @@
-import React, { Component, ComponentClass } from 'react';
+import React, { Component } from 'react';
 import {
 	View,
 	Text,
@@ -26,24 +26,24 @@ import moment from 'moment';
 
 interface IProps {
 	style?: StyleProp<ViewStyle>;
-	height?: number;
+	height: number;
 	date?: string | Date;
 	minDate?: string | Date;
 	maxDate?: string | Date;
 	duration?: number;
-	mode?: Mode;
+	mode: Mode;
 	format?: Format;
 	androidDatetimeMode?: AndroidDatetimeMode;
 	androidTimeMode?: AndroidTimeMode;
 	confirmBtnText?: string;
 	cancelBtnText?: string;
-	customStyles?: ICustomStyles;
+	customStyles: ICustomStyles;
 	showIcon?: boolean;
 	disabled?: boolean;
 	allowFontScaling?: boolean;
 	hideText?: boolean;
 	placeholder?: string;
-	TouchableComponent?: Touchable;
+	TouchableComponent: Touchable;
 	is24Hour?: boolean;
 	iconSource?: ImageSourcePropType;
 	minuteInterval?: MinuteInterval;
@@ -125,15 +125,15 @@ const SUPPORTED_ORIENTATIONS: SupportedOrientations[] = [
 ];
 
 type SupportedOrientations = 'portrait' | 'portrait-upside-down' | 'landscape' | 'landscape-left' | 'landscape-right';
-type Touchable = ComponentClass<TouchableHighlightProps> |
-	ComponentClass<TouchableNativeFeedbackProps> |
-	ComponentClass<TouchableOpacityProps> |
-	ComponentClass<TouchableWithoutFeedbackProps>;
+type Touchable = React.ComponentType<TouchableHighlightProps> |
+	React.ComponentType<TouchableNativeFeedbackProps> |
+	React.ComponentType<TouchableOpacityProps> |
+	React.ComponentType<TouchableWithoutFeedbackProps>;
 type MinuteInterval = 1 | 2 | 3 | 4 | 5 | 6 | 10 | 12 | 15 | 20 | 30 | undefined;
 
-class DatePicker extends Component<IProps> {
-	public static defaultProps = {
-		mode: 'date',
+class DatePicker extends Component<IProps, IState> {
+	public static defaultProps: Partial<IProps> = {
+		mode: Mode.date,
 		androidDatetimeMode: AndroidDatetimeMode.default,
 		androidTimeMode: AndroidTimeMode.default,
 		date: '',
@@ -144,7 +144,20 @@ class DatePicker extends Component<IProps> {
 		confirmBtnText: 'Confirm',
 		cancelBtnText: 'Cancel',
 		iconSource: require('./date_icon.png'),
-		customStyles: {},
+		customStyles: {
+			placeholderText: {},
+			dateText: {},
+			btnTextConfirm: {},
+			btnConfirm: {},
+			btnTextCancel: {},
+			btnCancel: {},
+			datePicker: {},
+			dateIcon: {},
+			datePickerCon: {},
+			dateInput: {},
+			disabled: {},
+			dateTouchBody: {},
+		},
 
 		// whether or not show the icon
 		showIcon: true,
@@ -153,7 +166,6 @@ class DatePicker extends Component<IProps> {
 		hideText: false,
 		placeholder: '',
 		TouchableComponent: TouchableHighlight,
-		modalOnResponderTerminationRequest: () => true,
 	};
 	public readonly state: IState;
 

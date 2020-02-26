@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { Component, ComponentClass } from 'react';
 import { TouchableHighlightProps, TouchableNativeFeedbackProps, TouchableOpacityProps, TouchableWithoutFeedbackProps, Animated, ViewStyle, ImageStyle, TextStyle, StyleProp, ImageSourcePropType } from 'react-native';
 interface IProps {
     style?: StyleProp<ViewStyle>;
@@ -19,7 +19,7 @@ interface IProps {
     allowFontScaling?: boolean;
     hideText?: boolean;
     placeholder?: string;
-    TouchableComponent: Touchable;
+    TouchableComponent?: Touchable;
     is24Hour?: boolean;
     iconSource?: ImageSourcePropType;
     minuteInterval?: MinuteInterval;
@@ -73,7 +73,7 @@ interface IState {
     opacity: Animated.Value;
     allowPointerEvents: boolean;
 }
-declare type Touchable = React.ComponentType<TouchableHighlightProps> | React.ComponentType<TouchableNativeFeedbackProps> | React.ComponentType<TouchableOpacityProps> | React.ComponentType<TouchableWithoutFeedbackProps>;
+declare type Touchable = ComponentClass<TouchableHighlightProps> | ComponentClass<TouchableNativeFeedbackProps> | ComponentClass<TouchableOpacityProps> | ComponentClass<TouchableWithoutFeedbackProps>;
 declare type MinuteInterval = 1 | 2 | 3 | 4 | 5 | 6 | 10 | 12 | 15 | 20 | 30 | undefined;
 declare class DatePicker extends Component<IProps, IState> {
     static defaultProps: Partial<IProps>;

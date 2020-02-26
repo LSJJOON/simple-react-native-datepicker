@@ -11,14 +11,14 @@ import {
 	View,
 	SafeAreaView,
 } from 'react-native';
-import DatePicker from './datepicker'
+import DatePicker from './datepicker/datepicker';
 
 class App extends Component {
-	render () {
+	public render() {
 		return (
 			<SafeAreaView>
-      	<DatePicker />
-    	</SafeAreaView>
+				<DatePicker />
+			</SafeAreaView>
 		);
 	}
 }

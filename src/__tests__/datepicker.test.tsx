@@ -13,8 +13,8 @@ import renderer from 'react-test-renderer';
 describe('DatePicker', () => {
 
 	it ('renders correctly', () => {
-		const tree = renderer.create(<DatePicker onDateChange={() => ({})} />).toJSON();
-	  expect(tree).toMatchSnapshot();
+		const tree = renderer.create(<DatePicker onDateChange={() => ({})}></DatePicker>).toJSON();
+  	expect(tree).toMatchSnapshot();
 	});
 
 	// it('initialize', () => {
@@ -104,7 +104,6 @@ describe('DatePicker', () => {
 
 	// 	expect(dateStr).toEqual('3000-09-09');
 
-
 	// 	const wrapperMax = shallow(<DatePicker date="" maxDate="2016-07-07" onDateChange={(date) => {
 	// 		dateStrMax = date;
 	// 	}}/>);
@@ -113,7 +112,6 @@ describe('DatePicker', () => {
 	// 	datePickerMax.onPressConfirm();
 
 	// 	expect(dateStrMax).toEqual('2016-07-07');
-
 
 	// 	const wrapperNormal = shallow(
 	// 		<DatePicker date="" minDate="2016-07-07" maxDate="3000-09-09" onDateChange={(date) => {dateStrNormal = date;}}/>
