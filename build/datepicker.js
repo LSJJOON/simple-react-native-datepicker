@@ -91,7 +91,7 @@ var DatePicker = /** @class */ (function (_super) {
             modalVisible: false,
             animatedHeight: new Animated.Value(props.height),
             opacity: new Animated.Value(0),
-            allowPointerEvents: true,
+            allowPointerEvents: true
         };
         _this.getDate = _this.getDate.bind(_this);
         _this.getDateStr = _this.getDateStr.bind(_this);
@@ -116,29 +116,46 @@ var DatePicker = /** @class */ (function (_super) {
             disabled && Style.disabled,
             disabled && customStyles.disabled,
         ];
-        return (React.createElement(TouchableComponent, { style: [Style.dateTouch, style], underlayColor: 'transparent', onPress: this.onPressDate },
-            React.createElement(View, { style: [Style.dateTouchBody, customStyles.dateTouchBody] },
-                !this.props.hideText ?
-                    React.createElement(View, { style: dateInputStyle }, this.getTitleElement())
-                    :
-                        React.createElement(View, null),
-                this._renderIcon(),
-                Platform.OS === 'ios' && React.createElement(Modal, { transparent: true, animationType: "none", visible: this.state.modalVisible, supportedOrientations: SUPPORTED_ORIENTATIONS, onRequestClose: function () { _this.setModalVisible(false); } },
-                    React.createElement(View, { style: { flex: 1 } },
-                        React.createElement(Animated.View, { style: { flex: 1, opacity: this.state.opacity } },
-                            React.createElement(TouchableComponent, { style: Style.datePickerMask, activeOpacity: 1, underlayColor: '#00000077', onPress: this.onPressMask },
-                                React.createElement(TouchableComponent, { underlayColor: '#fff', style: { flex: 1 } },
-                                    React.createElement(Animated.View, { style: [
-                                            Style.datePickerCon,
-                                            { height: height, transform: [{ translateY: this.state.animatedHeight }] },
-                                            customStyles.datePickerCon,
-                                        ] },
-                                        React.createElement(View, { pointerEvents: this.state.allowPointerEvents ? 'auto' : 'none' },
-                                            React.createElement(DatePickerIOS, { date: this.state.date, mode: mode, minimumDate: minDate ? this.getDate(minDate) : undefined, maximumDate: maxDate ? this.getDate(maxDate) : undefined, onDateChange: this.onDateChange, minuteInterval: minuteInterval, timeZoneOffsetInMinutes: timeZoneOffsetInMinutes ? timeZoneOffsetInMinutes : undefined, style: [Style.datePicker, customStyles.datePicker], locale: locale })),
-                                        React.createElement(TouchableComponent, { underlayColor: 'transparent', onPress: this.onPressCancel, style: [Style.btnText, Style.btnCancel, customStyles.btnCancel] },
-                                            React.createElement(Text, { allowFontScaling: allowFontScaling, style: [Style.btnTextText, Style.btnTextCancel, customStyles.btnTextCancel] }, cancelBtnText)),
-                                        React.createElement(TouchableComponent, { underlayColor: 'transparent', onPress: this.onPressConfirm, style: [Style.btnText, Style.btnConfirm, customStyles.btnConfirm] },
-                                            React.createElement(Text, { allowFontScaling: allowFontScaling, style: [Style.btnTextText, customStyles.btnTextConfirm] }, confirmBtnText)))))))))));
+        return (<TouchableComponent style={[Style.dateTouch, style]} underlayColor={'transparent'} onPress={this.onPressDate}>
+				<View style={[Style.dateTouchBody, customStyles.dateTouchBody]}>
+					{!this.props.hideText ?
+            <View style={dateInputStyle}>
+								{this.getTitleElement()}
+							</View>
+            :
+                <View />}
+					{this._renderIcon()}
+					{Platform.OS === 'ios' && <Modal transparent={true} animationType="none" visible={this.state.modalVisible} supportedOrientations={SUPPORTED_ORIENTATIONS} onRequestClose={function () { _this.setModalVisible(false); }}>
+						<View style={{ flex: 1 }}>
+							<Animated.View style={{ flex: 1, opacity: this.state.opacity }}>
+								<TouchableComponent style={Style.datePickerMask} activeOpacity={1} underlayColor={'#00000077'} onPress={this.onPressMask}>
+									<TouchableComponent underlayColor={'#fff'} style={{ flex: 1 }}>
+										<Animated.View style={[
+            Style.datePickerCon,
+            { height: height, transform: [{ translateY: this.state.animatedHeight }] },
+            customStyles.datePickerCon,
+        ]}>
+											<View pointerEvents={this.state.allowPointerEvents ? 'auto' : 'none'}>
+												<DatePickerIOS date={this.state.date} mode={mode} minimumDate={minDate ? this.getDate(minDate) : undefined} maximumDate={maxDate ? this.getDate(maxDate) : undefined} onDateChange={this.onDateChange} minuteInterval={minuteInterval} timeZoneOffsetInMinutes={timeZoneOffsetInMinutes ? timeZoneOffsetInMinutes : undefined} style={[Style.datePicker, customStyles.datePicker]} locale={locale}/>
+											</View>
+											<TouchableComponent underlayColor={'transparent'} onPress={this.onPressCancel} style={[Style.btnText, Style.btnCancel, customStyles.btnCancel]}>
+												<Text allowFontScaling={allowFontScaling} style={[Style.btnTextText, Style.btnTextCancel, customStyles.btnTextCancel]}>
+													{cancelBtnText}
+												</Text>
+											</TouchableComponent>
+											<TouchableComponent underlayColor={'transparent'} onPress={this.onPressConfirm} style={[Style.btnText, Style.btnConfirm, customStyles.btnConfirm]}>
+												<Text allowFontScaling={allowFontScaling} style={[Style.btnTextText, customStyles.btnTextConfirm]}>
+													{confirmBtnText}
+												</Text>
+											</TouchableComponent>
+										</Animated.View>
+									</TouchableComponent>
+								</TouchableComponent>
+							</Animated.View>
+						</View>
+					</Modal>}
+				</View>
+			</TouchableComponent>);
     };
     DatePicker.prototype.UNSAFE_componentWillReceiveProps = function (nextProps) {
         if (nextProps.date !== this.props.date) {
@@ -154,11 +171,11 @@ var DatePicker = /** @class */ (function (_super) {
             Animated.parallel([
                 Animated.timing(this.state.animatedHeight, {
                     toValue: 0,
-                    duration: duration,
+                    duration: duration
                 }),
                 Animated.timing(this.state.opacity, {
                     toValue: 1,
-                    duration: duration,
+                    duration: duration
                 }),
             ]).start();
         }
@@ -166,11 +183,11 @@ var DatePicker = /** @class */ (function (_super) {
             Animated.parallel([
                 Animated.timing(this.state.animatedHeight, {
                     toValue: height,
-                    duration: duration,
+                    duration: duration
                 }),
                 Animated.timing(this.state.opacity, {
                     toValue: 0,
-                    duration: duration,
+                    duration: duration
                 }),
             ]).start(function () {
                 _this.setState({ modalVisible: visible });
@@ -247,19 +264,23 @@ var DatePicker = /** @class */ (function (_super) {
     DatePicker.prototype.getTitleElement = function () {
         var _a = this.props, date = _a.date, placeholder = _a.placeholder, customStyles = _a.customStyles, allowFontScaling = _a.allowFontScaling;
         if (!date && placeholder) {
-            return (React.createElement(Text, { allowFontScaling: allowFontScaling, style: [Style.placeholderText, customStyles.placeholderText] }, placeholder));
+            return (<Text allowFontScaling={allowFontScaling} style={[Style.placeholderText, customStyles.placeholderText]}>
+					{placeholder}
+				</Text>);
         }
-        return (React.createElement(Text, { allowFontScaling: allowFontScaling, style: [Style.dateText, customStyles.dateText] }, this.getDateStr()));
+        return (<Text allowFontScaling={allowFontScaling} style={[Style.dateText, customStyles.dateText]}>
+				{this.getDateStr()}
+			</Text>);
     };
     DatePicker.prototype.onDateChange = function (date) {
         var _this = this;
         this.setState({
             allowPointerEvents: false,
-            date: date,
+            date: date
         });
         var timeoutId = setTimeout(function () {
             _this.setState({
-                allowPointerEvents: true,
+                allowPointerEvents: true
             });
             clearTimeout(timeoutId);
         }, 200);
@@ -268,7 +289,7 @@ var DatePicker = /** @class */ (function (_super) {
         var action = _a.action, year = _a.year, month = _a.month, day = _a.day;
         if (action !== DatePickerAndroid.dismissedAction && year && month && day) {
             this.setState({
-                date: new Date(year, month, day),
+                date: new Date(year, month, day)
             });
             this.datePicked();
         }
@@ -280,7 +301,7 @@ var DatePicker = /** @class */ (function (_super) {
         var action = _a.action, hour = _a.hour, minute = _a.minute;
         if (action !== DatePickerAndroid.dismissedAction && hour && minute) {
             this.setState({
-                date: moment().hour(hour).minute(minute).toDate(),
+                date: moment().hour(hour).minute(minute).toDate()
             });
             this.datePicked();
         }
@@ -302,7 +323,7 @@ var DatePicker = /** @class */ (function (_super) {
                                 hour: timeMoment.hour(),
                                 minute: timeMoment.minutes(),
                                 is24Hour: is24Hour,
-                                mode: androidTimeMode,
+                                mode: androidTimeMode
                             })];
                     case 1:
                         timePickerResult = _e.sent();
@@ -321,7 +342,7 @@ var DatePicker = /** @class */ (function (_super) {
         var action = timePickerResult.action, hour = timePickerResult.hour, minute = timePickerResult.minute;
         if (action !== DatePickerAndroid.dismissedAction) {
             this.setState({
-                date: new Date(year, month, day, hour, minute),
+                date: new Date(year, month, day, hour, minute)
             });
             this.datePicked();
         }
@@ -341,7 +362,7 @@ var DatePicker = /** @class */ (function (_super) {
                         Keyboard.dismiss();
                         // reset state
                         this.setState({
-                            date: this.getDate(),
+                            date: this.getDate()
                         });
                         if (!(Platform.OS === 'ios')) return [3 /*break*/, 1];
                         this.setModalVisible(true);
@@ -353,7 +374,7 @@ var DatePicker = /** @class */ (function (_super) {
                                 date: this.state.date,
                                 minDate: minDate ? this.getDate(minDate) : undefined,
                                 maxDate: maxDate ? this.getDate(maxDate) : undefined,
-                                mode: androidDatetimeMode,
+                                mode: androidDatetimeMode
                             })];
                     case 2:
                         result = _d.sent();
@@ -366,7 +387,7 @@ var DatePicker = /** @class */ (function (_super) {
                                 hour: timeMoment.hour(),
                                 minute: timeMoment.minutes(),
                                 is24Hour: is24Hour,
-                                mode: androidTimeMode,
+                                mode: androidTimeMode
                             })];
                     case 4:
                         result = _d.sent();
@@ -378,7 +399,7 @@ var DatePicker = /** @class */ (function (_super) {
                                 date: this.state.date,
                                 minDate: minDate ? this.getDate(minDate) : undefined,
                                 maxDate: maxDate ? this.getDate(maxDate) : undefined,
-                                mode: androidDatetimeMode,
+                                mode: androidDatetimeMode
                             })];
                     case 6:
                         result = _d.sent();
@@ -399,21 +420,21 @@ var DatePicker = /** @class */ (function (_super) {
             if (iconComponent) {
                 return iconComponent;
             }
-            return (React.createElement(Image, { style: [Style.dateIcon, customStyles.dateIcon], source: iconSource || require('./date_icon.png') }));
+            return (<Image style={[Style.dateIcon, customStyles.dateIcon]} source={iconSource || require('../date_icon.png')}/>);
         }
         return null;
     };
     DatePicker.defaultProps = {
         mode: Mode.date,
-        androidDatetimeMode: AndroidDatetimeMode.default,
-        androidTimeMode: AndroidTimeMode.default,
+        androidDatetimeMode: AndroidDatetimeMode["default"],
+        androidTimeMode: AndroidTimeMode["default"],
         date: '',
         height: 259,
         // slide animation duration time, default to 300ms, IOS only
         duration: 300,
         confirmBtnText: 'Confirm',
         cancelBtnText: 'Cancel',
-        iconSource: require('./date_icon.png'),
+        iconSource: require('../date_icon.png'),
         customStyles: {
             placeholderText: {},
             dateText: {},
@@ -426,7 +447,7 @@ var DatePicker = /** @class */ (function (_super) {
             datePickerCon: {},
             dateInput: {},
             disabled: {},
-            dateTouchBody: {},
+            dateTouchBody: {}
         },
         // whether or not show the icon
         showIcon: true,
@@ -434,7 +455,7 @@ var DatePicker = /** @class */ (function (_super) {
         allowFontScaling: true,
         hideText: false,
         placeholder: '',
-        TouchableComponent: TouchableHighlight,
+        TouchableComponent: TouchableHighlight
     };
     return DatePicker;
 }(Component));

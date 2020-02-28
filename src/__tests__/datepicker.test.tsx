@@ -1,4 +1,5 @@
-import React from 'react';
+import * as React from 'react';
+// import React, { Component } from 'react';
 // import {Platform, Animated, DatePickerAndroid, Modal, View} from 'react-native';
 // import Enzyme, {shallow} from 'enzyme';
 // import Adapter from 'enzyme-adapter-react-16';
@@ -7,8 +8,7 @@ import DatePicker from '../datepicker';
 
 // Enzyme.configure({adapter: new Adapter()});
 
-import 'jsdom-global/register';
-import renderer from 'react-test-renderer';
+import * as renderer from 'react-test-renderer';
 
 describe('DatePicker', () => {
 

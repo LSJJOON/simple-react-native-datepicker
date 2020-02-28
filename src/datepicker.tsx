@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import * as React from 'react';
+// import React, { Component } from 'react';
 import {
 	View,
 	Text,
@@ -143,7 +144,7 @@ class DatePicker extends Component<IProps, IState> {
 		duration: 300,
 		confirmBtnText: 'Confirm',
 		cancelBtnText: 'Cancel',
-		iconSource: require('./date_icon.png'),
+		iconSource: require('../date_icon.png'),
 		customStyles: {
 			placeholderText: {},
 			dateText: {},
@@ -508,16 +509,19 @@ class DatePicker extends Component<IProps, IState> {
 				is24Hour,
 				mode: androidTimeMode,
 			});
-			const args = { year, month, day, timePickerResult };
-			this.onDatetimeTimePicked.call(this, args);
+			if (year && month && day) {
+				const args = { year, month, day, timePickerResult };
+				this.onDatetimeTimePicked.call(this, args);
+			}
 		} else {
 			this.onPressCancel();
 		}
 	}
 
 	private onDatetimeTimePicked(
-		year: number, month: number, day: number, timePickerResult: ITimePickerAndroidOpenReturn,
+		args: { year: number, month: number, day: number, timePickerResult: ITimePickerAndroidOpenReturn },
 	) {
+		const { year, month, day, timePickerResult } = args;
 		const {action, hour, minute} = timePickerResult;
 		if (action !== DatePickerAndroid.dismissedAction) {
 			this.setState({
@@ -595,7 +599,7 @@ class DatePicker extends Component<IProps, IState> {
 			return (
 				<Image
 					style={[Style.dateIcon, customStyles.dateIcon]}
-					source={iconSource || require('./date_icon.png')}
+					source={iconSource || require('../date_icon.png')}
 				/>
 			);
 		}
