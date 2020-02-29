@@ -13,8 +13,8 @@ import * as renderer from 'react-test-renderer';
 describe('DatePicker', () => {
 
 	it ('renders correctly', () => {
-		const tree = renderer.create(<DatePicker onDateChange={() => ({})}></DatePicker>).toJSON();
-  	expect(tree).toMatchSnapshot();
+		const tree = renderer.create(<DatePicker date='2019-01-01' onDateChange={() => 1} />).toJSON();
+		expect(tree).toMatchSnapshot();
 	});
 
 	// it('initialize', () => {

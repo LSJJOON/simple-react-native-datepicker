@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import React, { Component } from 'react';
 import {
 	View,
 	Text,
@@ -23,39 +22,62 @@ import {
 	ImageSourcePropType,
 } from 'react-native';
 import Style from './style';
-import moment from 'moment';
+import * as moment from 'moment';
 
 interface IProps {
 	style?: StyleProp<ViewStyle>;
 	height: number;
-	date?: string | Date;
+	date: string | Date;
 	minDate?: string | Date;
 	maxDate?: string | Date;
-	duration?: number;
+	duration: number;
 	mode: Mode;
 	format?: Format;
-	androidDatetimeMode?: AndroidDatetimeMode;
-	androidTimeMode?: AndroidTimeMode;
-	confirmBtnText?: string;
-	cancelBtnText?: string;
+	androidDatetimeMode: AndroidDatetimeMode;
+	androidTimeMode: AndroidTimeMode;
+	confirmBtnText: string;
+	cancelBtnText: string;
 	customStyles: ICustomStyles;
-	showIcon?: boolean;
-	disabled?: boolean;
-	allowFontScaling?: boolean;
-	hideText?: boolean;
-	placeholder?: string;
+	showIcon: boolean;
+	disabled: boolean;
+	allowFontScaling: boolean;
+	hideText: boolean;
+	placeholder: string;
 	TouchableComponent: Touchable;
 	is24Hour?: boolean;
-	iconSource?: ImageSourcePropType;
+	iconSource: ImageSourcePropType;
 	minuteInterval?: MinuteInterval;
 	timeZoneOffsetInMinutes?: number;
 	locale?: string;
-	iconComponent?: Component;
+	iconComponent?: React.Component;
 	getDateStr?: (date: Date) => string;
 	onDateChange: (dateStr: string, date: Date | string) => any;
 	onPressMask?: () => void;
 	onCloseModal?: () => void;
 	onOpenModal?: () => void;
+}
+
+interface IDeafaultProps {
+	mode: Mode;
+	androidDatetimeMode: AndroidDatetimeMode;
+	androidTimeMode: AndroidTimeMode;
+	date: string | Date;
+	height: number;
+
+	// slide animation duration time, default to 300ms, IOS only
+	duration: number;
+	confirmBtnText: string;
+	cancelBtnText: string;
+	iconSource: ImageSourcePropType;
+	customStyles: ICustomStyles;
+
+	// whether or not show the icon
+	showIcon: boolean;
+	disabled: boolean;
+	allowFontScaling: boolean;
+	hideText: boolean;
+	placeholder: string;
+	TouchableComponent: Touchable;
 }
 
 interface ICustomStyles {
@@ -132,12 +154,12 @@ type Touchable = React.ComponentType<TouchableHighlightProps> |
 	React.ComponentType<TouchableWithoutFeedbackProps>;
 type MinuteInterval = 1 | 2 | 3 | 4 | 5 | 6 | 10 | 12 | 15 | 20 | 30 | undefined;
 
-class DatePicker extends Component<IProps, IState> {
-	public static defaultProps: Partial<IProps> = {
+class DatePicker extends React.Component<IProps> {
+	public static defaultProps: IDeafaultProps = {
 		mode: Mode.date,
 		androidDatetimeMode: AndroidDatetimeMode.default,
 		androidTimeMode: AndroidTimeMode.default,
-		date: '',
+		date: new Date(),
 		height: 259,
 
 		// slide animation duration time, default to 300ms, IOS only
@@ -435,7 +457,6 @@ class DatePicker extends Component<IProps, IState> {
 		if (typeof this.props.getDateStr === 'function') {
 			return this.props.getDateStr(dateInstance);
 		}
-
 		return moment(dateInstance).format(format);
 	}
 
