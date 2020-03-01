@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DatePicker renders correctly 1`] = `
+exports[`DatePicker renders correctly (snapshot test) 1`] = `
 <View
   accessible={true}
   focusable={true}

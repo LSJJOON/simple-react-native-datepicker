@@ -1,12 +1,15 @@
 {
 	"compilerOptions": {
+		"outDir": "build",
 		"target": "esnext",
     "module": "commonjs",
-    "lib": ["es6"],
-		"allowJs": true,
+		"lib": ["es6"],
+		"sourceMap": true,
+		"allowJs": false,
 		"jsx": "react-native",
-		"noEmit": true,
+		"noEmit": false,
 		"isolatedModules": true,
+		"declaration": true,
 		"strict": true,
 		"moduleResolution": "node",
 		"allowSyntheticDefaultImports": true,

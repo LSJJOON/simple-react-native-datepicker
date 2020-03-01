@@ -20,11 +20,12 @@ import {
 	TextStyle,
 	StyleProp,
 	ImageSourcePropType,
+	NativeSyntheticEvent,
 } from 'react-native';
 import Style from './style';
 import * as moment from 'moment';
 
-interface IProps {
+export interface IProps {
 	style?: StyleProp<ViewStyle>;
 	height: number;
 	date: string | Date;
@@ -49,7 +50,7 @@ interface IProps {
 	minuteInterval?: MinuteInterval;
 	timeZoneOffsetInMinutes?: number;
 	locale?: string;
-	iconComponent?: React.Component;
+	iconComponent?: React.ReactElement<{}>;
 	getDateStr?: (date: Date) => string;
 	onDateChange: (dateStr: string, date: Date | string) => any;
 	onPressMask?: () => void;
@@ -57,7 +58,7 @@ interface IProps {
 	onOpenModal?: () => void;
 }
 
-interface IDeafaultProps {
+export interface IDeafaultProps {
 	mode: Mode;
 	androidDatetimeMode: AndroidDatetimeMode;
 	androidTimeMode: AndroidTimeMode;
@@ -81,18 +82,18 @@ interface IDeafaultProps {
 }
 
 interface ICustomStyles {
-	placeholderText: StyleProp<TextStyle>;
-	dateText: StyleProp<TextStyle>;
-	btnTextConfirm: StyleProp<TextStyle>;
-	btnConfirm: StyleProp<ViewStyle>;
-	btnTextCancel: StyleProp<TextStyle>;
-	btnCancel: StyleProp<ViewStyle>;
-	datePicker: StyleProp<ViewStyle>;
-	dateIcon: StyleProp<ImageStyle>;
-	datePickerCon: StyleProp<ViewStyle>;
-	dateInput: StyleProp<ViewStyle>;
-	disabled: StyleProp<ViewStyle>;
-	dateTouchBody: StyleProp<ViewStyle>;
+	placeholderText?: TextStyle;
+	dateText?: StyleProp<TextStyle>;
+	btnTextConfirm?: StyleProp<TextStyle>;
+	btnConfirm?: StyleProp<ViewStyle>;
+	btnTextCancel?: StyleProp<TextStyle>;
+	btnCancel?: StyleProp<ViewStyle>;
+	datePicker?: StyleProp<ViewStyle>;
+	dateIcon?: StyleProp<ImageStyle>;
+	datePickerCon?: StyleProp<ViewStyle>;
+	dateInput?: StyleProp<ViewStyle>;
+	disabled?: StyleProp<ViewStyle>;
+	dateTouchBody?: StyleProp<ViewStyle>;
 }
 
 export enum Mode {
@@ -159,7 +160,7 @@ class DatePicker extends React.Component<IProps> {
 		mode: Mode.date,
 		androidDatetimeMode: AndroidDatetimeMode.default,
 		androidTimeMode: AndroidTimeMode.default,
-		date: new Date(),
+		date: '',
 		height: 259,
 
 		// slide animation duration time, default to 300ms, IOS only
@@ -209,7 +210,7 @@ class DatePicker extends React.Component<IProps> {
 		this.onPressDate = this.onPressDate.bind(this);
 		this.onPressCancel = this.onPressCancel.bind(this);
 		this.onPressConfirm = this.onPressConfirm.bind(this);
-		this.onDateChange = this.onDateChange.bind(this);
+		this._onDateChange = this._onDateChange.bind(this);
 		this.onPressMask = this.onPressMask.bind(this);
 		this.onDatePicked = this.onDatePicked.bind(this);
 		this.onTimePicked = this.onTimePicked.bind(this);
@@ -292,7 +293,7 @@ class DatePicker extends React.Component<IProps> {
 													mode={mode}
 													minimumDate={minDate ? this.getDate(minDate) : undefined}
 													maximumDate={maxDate ? this.getDate(maxDate) : undefined}
-													onDateChange={this.onDateChange}
+													onDateChange={this._onDateChange}
 													minuteInterval={minuteInterval}
 													timeZoneOffsetInMinutes={timeZoneOffsetInMinutes ? timeZoneOffsetInMinutes : undefined}
 													style={[Style.datePicker, customStyles.datePicker]}
@@ -339,6 +340,14 @@ class DatePicker extends React.Component<IProps> {
 		}
 	}
 
+	public onStartShouldSetResponder(e: NativeSyntheticEvent<Touchable>) {
+		return true;
+	}
+
+	public onMoveShouldSetResponder(e: NativeSyntheticEvent<Touchable>) {
+		return true;
+	}
+
 	private setModalVisible(visible: boolean) {
 		const { height, duration } = this.props;
 
@@ -382,14 +391,6 @@ class DatePicker extends React.Component<IProps> {
 			});
 		}
 	}
-
-	// onStartShouldSetResponder(e) {
-	//   return true;
-	// }
-
-	// onMoveShouldSetResponder(e) {
-	//   return true;
-	// }
 
 	private onPressMask() {
 		if (typeof this.props.onPressMask === 'function') {
@@ -483,7 +484,7 @@ class DatePicker extends React.Component<IProps> {
 		);
 	}
 
-	private onDateChange(date: Date) {
+	private _onDateChange(date: Date) {
 		this.setState({
 			allowPointerEvents: false,
 			date,
@@ -523,7 +524,6 @@ class DatePicker extends React.Component<IProps> {
 
 		if (action !== DatePickerAndroid.dismissedAction) {
 			const timeMoment = moment(this.state.date);
-
 			const timePickerResult = await TimePickerAndroid.open({
 				hour: timeMoment.hour(),
 				minute: timeMoment.minutes(),
@@ -569,9 +569,7 @@ class DatePicker extends React.Component<IProps> {
 		if (Platform.OS === 'ios') {
 			this.setModalVisible(true);
 		} else {
-
 			const {mode, androidDatetimeMode, androidTimeMode, format = Format[mode], minDate, maxDate, is24Hour = !format.match(/h|a/)} = this.props;
-
 			if (mode === 'date') {
 				const result = await DatePickerAndroid.open({
 					date: this.state.date,
@@ -597,6 +595,8 @@ class DatePicker extends React.Component<IProps> {
 					mode: androidDatetimeMode,
 				});
 				this.onDatetimePicked(result);
+			} else {
+				throw new Error('android datepicker mode not matching. please check mode property');
 			}
 		}
 

@@ -21,10 +21,12 @@ module.exports = {
   },
   globals: {
     'ts-jest': {
-      babelConfig: true,
+			babelConfig: true,
+			diagnostics: false
     }
   },
   // This is the only part which you can keep
   // from the above linked tutorial's config:
-  cacheDirectory: '.jest/cache',
+	cacheDirectory: '.jest/cache',
+	timers: 'fake'
 };

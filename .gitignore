@@ -139,4 +139,4 @@ local.properties
 /android/
 
 #jest
-.jest/cache/
+.jest/

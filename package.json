@@ -1,11 +1,11 @@
 {
-  "name": "@lsj/react-native-datepicker",
+  "name": "simple-react-native-datepicker",
   "version": "1.0.0",
   "description": "React Native date & time picker component for iOS and Android, Use react-native-community / react-native-datetimepicker",
   "main": "build/datepicker.js",
   "scripts": {
-    "test": "jest",
-    "build": "npx tsc"
+    "test": "jest && jest --clearCache",
+    "build": "npx tsc -p ./tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/LSJJOON/react-native-datepicker#readme",
   "devDependencies": {
+    "@types/enzyme": "^3.10.5",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
     "@types/jest": "^25.1.3",
     "@types/react": "^16.9.23",
     "@types/react-native": "^0.61.17",
@@ -31,7 +33,10 @@
     "enzyme-adapter-react-16": "^1.15.2",
     "jest": "^25.1.0",
     "jest-react-native": "^18.0.0",
+    "jsdom": "16.2.0",
+    "jsdom-global": "3.0.2",
     "react": "^16.12.0",
+    "react-dom": "^16.13.0",
     "react-native": "^0.61.5",
     "react-scripts-ts": "^3.1.0",
     "react-test-renderer": "^16.13.0",

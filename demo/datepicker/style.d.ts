@@ -1,4 +1,4 @@
-declare let style: {
+declare const style: {
     dateTouch: {
         width: number;
     };

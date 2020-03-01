@@ -1,19 +1,21 @@
-import { StyleSheet } from 'react-native';
-var style = StyleSheet.create({
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const react_native_1 = require("react-native");
+const style = react_native_1.StyleSheet.create({
     dateTouch: {
-        width: 142
+        width: 142,
     },
     dateTouchBody: {
         flexDirection: 'row',
         height: 40,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     dateIcon: {
         width: 32,
         height: 32,
         marginLeft: 5,
-        marginRight: 5
+        marginRight: 5,
     },
     dateInput: {
         flex: 1,
@@ -21,24 +23,24 @@ var style = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#aaa',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     dateText: {
-        color: '#333'
+        color: '#333',
     },
     placeholderText: {
-        color: '#c9c9c9'
+        color: '#c9c9c9',
     },
     datePickerMask: {
         flex: 1,
         alignItems: 'flex-end',
         flexDirection: 'row',
-        backgroundColor: '#00000077'
+        backgroundColor: '#00000077',
     },
     datePickerCon: {
         backgroundColor: '#fff',
         height: 0,
-        overflow: 'hidden'
+        overflow: 'hidden',
     },
     btnText: {
         position: 'absolute',
@@ -47,29 +49,29 @@ var style = StyleSheet.create({
         paddingHorizontal: 20,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     btnTextText: {
         fontSize: 16,
-        color: '#007AFF'
+        color: '#007AFF',
     },
     btnTextCancel: {
-        color: '#666'
+        color: '#666',
     },
     btnCancel: {
-        left: 0
+        left: 0,
     },
     btnConfirm: {
-        right: 0
+        right: 0,
     },
     datePicker: {
         marginTop: 42,
         borderTopColor: '#ccc',
-        borderTopWidth: 1
+        borderTopWidth: 1,
     },
     disabled: {
-        backgroundColor: '#eee'
-    }
+        backgroundColor: '#eee',
+    },
 });
-export default style;
+exports.default = style;
 //# sourceMappingURL=style.js.map
