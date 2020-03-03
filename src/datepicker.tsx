@@ -24,6 +24,7 @@ import {
 } from 'react-native';
 import Style from './style';
 import * as moment from 'moment';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export interface IProps {
 	style?: StyleProp<ViewStyle>;
