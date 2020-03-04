@@ -140,3 +140,6 @@ local.properties
 
 #jest
 .jest/
+
+#build
+build/
