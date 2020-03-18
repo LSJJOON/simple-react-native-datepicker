@@ -1,3 +1,4 @@
+export declare const IOS_DATEPICKER_HEIGHT = 259;
 declare const style: {
     dateTouch: {
         width: number;

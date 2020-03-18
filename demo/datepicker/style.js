@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_native_1 = require("react-native");
+exports.IOS_DATEPICKER_HEIGHT = 259;
 const style = react_native_1.StyleSheet.create({
     dateTouch: {
         width: 142,
@@ -39,7 +40,7 @@ const style = react_native_1.StyleSheet.create({
     },
     datePickerCon: {
         backgroundColor: '#fff',
-        height: 0,
+        height: exports.IOS_DATEPICKER_HEIGHT,
         overflow: 'hidden',
     },
     btnText: {

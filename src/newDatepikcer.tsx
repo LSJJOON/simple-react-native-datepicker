@@ -59,12 +59,13 @@ class DatePicker extends React.Component<IProps> {
 
 	constructor(props: IProps) {
 		super(props);
-
+		const firstOpacity = (props.visible) ? 1 : 0;
+		const firstTranslateY = (props.visible) ? 0 : IOS_DATEPICKER_HEIGHT;
 		this.state = {
 			visible: props.visible || true,
 			date: props.date ? new Date(props.date) : new Date(),
-			animatedOpacity: new Animated.Value(0),
-			animatedTranslateY: new Animated.Value(IOS_DATEPICKER_HEIGHT),
+			animatedOpacity: new Animated.Value(firstOpacity),
+			animatedTranslateY: new Animated.Value(firstTranslateY),
 		};
 	}
 
