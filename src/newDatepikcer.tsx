@@ -86,7 +86,9 @@ class DatePicker extends React.Component<IProps> {
 				supportedOrientations={SUPPORTED_ORIENTATIONS}
 				onRequestClose={() => this._hideModal()}
 			>
-				<Animated.View style={{flex: 1, opacity: this.state.animatedOpacity}}>
+				<Animated.View
+					style={{flex: 1, justifyContent: 'flex-end', backgroundColor: '#00000077', opacity: this.state.animatedOpacity}}
+				>
 					<TouchableWithoutFeedback
 						style={styles.datePickerMask}
 						onPress={() => this._hideModal()}

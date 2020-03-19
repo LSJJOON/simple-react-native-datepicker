@@ -34,7 +34,7 @@ class DatePicker extends React.Component {
             <datetimepicker_1.default value={this.state.date} minuteInterval={this.props.minuteInterval} onChange={(event, date) => this._onDateChange(event, date)}/>);
         return (react_native_1.Platform.OS === 'android' ? DateTimePicker :
             <react_native_1.Modal transparent={true} animationType="none" visible={this.state.visible} supportedOrientations={SUPPORTED_ORIENTATIONS} onRequestClose={() => this._hideModal()}>
-				<react_native_1.Animated.View style={{ flex: 1, opacity: this.state.animatedOpacity }}>
+				<react_native_1.Animated.View style={{ flex: 1, justifyContent: 'flex-end', backgroundColor: '#00000077', opacity: this.state.animatedOpacity }}>
 					<react_native_1.TouchableWithoutFeedback style={style_1.default.datePickerMask} onPress={() => this._hideModal()}>
 						<react_native_1.Animated.View style={[
                 style_1.default.datePickerCon,
