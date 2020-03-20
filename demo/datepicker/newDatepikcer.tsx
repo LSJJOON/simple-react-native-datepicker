@@ -3,9 +3,12 @@ import RNDateTimePicker, { Event } from '@react-native-community/datetimepicker'
 import {
 	Platform,
 	TouchableWithoutFeedback,
+	TouchableOpacity,
 	Animated,
 	Modal,
-	View
+	View,
+	Text,
+	Button
 } from 'react-native';
 import * as moment from 'moment';
 import styles, { IOS_DATEPICKER_HEIGHT } from './style';
@@ -86,25 +89,37 @@ class DatePicker extends React.Component<IProps> {
 				supportedOrientations={SUPPORTED_ORIENTATIONS}
 				onRequestClose={() => this._hideModal()}
 			>
+				<View style={{ flex: 1 }}>
 				<Animated.View style={{flex: 1, backgroundColor: '#000000', opacity: this.state.animatedOpacity}}>
-					<TouchableWithoutFeedback onPress={() => this._hideDatePicker()}>
+					<TouchableWithoutFeedback onPress={() => this._cancelHandler()}>
 						<View style={{ flex: 1 }}></View>
 					</TouchableWithoutFeedback>
 					<Animated.View
-						style={[
-							styles.datePickerCon,
-							{ transform: [{translateY: this.state.animatedTranslateY }]},
-						]}
-					>
+					style={[
+						styles.datePickerCon,
+						{ transform: [{translateY: this.state.animatedTranslateY }] },
+					]}
+				>
+						<View style={{ backgroundColor: '#fff', flex: 1, flexDirection: 'row', height: IOS_DATEPICKER_HEIGHT }}>
+							<TouchableOpacity style={{ left: 0, marginLeft: 24, marginTop: 4 }}>
+								<Text style={{  }}>Cancel</Text>
+							</TouchableOpacity>
+							<TouchableOpacity style={{ right: 0, marginRight: 24, marginTop: 4, position: 'absolute' }}>
+								<Text style={{  }}>Confirm</Text>
+							</TouchableOpacity>
+						</View>
 						{DateTimePicker}
 					</Animated.View>
 				</Animated.View>
+				
+				</View>
 			</Modal>
 		);
 	}
 
 	public UNSAFE_componentWillReceiveProps(nextProps: IProps) {
 		const { visible } = nextProps;
+		console.log(visible)
 		if (this.state.visible !== visible) {
 			visible ? this._showDatePicker() : this._hideDatePicker();
 		}
@@ -116,12 +131,12 @@ class DatePicker extends React.Component<IProps> {
 		}
 
 		const dateStr = dateToStr(date, this.props.format || DefaultFormat[this.props.mode]);
-		this.setState({ date, visible: false });
+		this.setState({ date });
 		this.props.onDateChange(date, dateStr);
 	}
 
 	private _cancelHandler() {
-		this._hideDatePicker();
+		this.props.onDateChange(undefined, undefined);
 	}
 
 	private _showDatePicker() {

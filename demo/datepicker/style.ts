@@ -1,7 +1,7 @@
 import {StyleSheet} from 'react-native';
 
 export const IOS_DATEPICKER_HEIGHT = 259;
-
+const IOS_DEFAULT_TINT_COLOR = '007AFF';
 const style = StyleSheet.create({
 	dateTouch: {
 		width: 142,
@@ -41,7 +41,7 @@ const style = StyleSheet.create({
 	datePickerCon: {
 		backgroundColor: '#fff',
 		height: IOS_DATEPICKER_HEIGHT,
-		overflow: 'hidden',
+		// overflow: 'hidden',
 	},
 	btnText: {
 		position: 'absolute',
