@@ -111,7 +111,6 @@ class DatePicker extends React.Component<IProps> {
 						{DateTimePicker}
 					</Animated.View>
 				</Animated.View>
-				
 				</View>
 			</Modal>
 		);

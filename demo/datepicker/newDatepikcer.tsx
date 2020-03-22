@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import * as moment from 'moment';
 import styles, { IOS_DATEPICKER_HEIGHT } from './style';
+const IOS_DEFAULT_TINT_COLOR = '#007AFF';
 
 export interface IProps {
 	visible?: boolean;
@@ -95,23 +96,22 @@ class DatePicker extends React.Component<IProps> {
 						<View style={{ flex: 1 }}></View>
 					</TouchableWithoutFeedback>
 					<Animated.View
-					style={[
-						styles.datePickerCon,
-						{ transform: [{translateY: this.state.animatedTranslateY }] },
-					]}
-				>
-						<View style={{ backgroundColor: '#fff', flex: 1, flexDirection: 'row', height: IOS_DATEPICKER_HEIGHT }}>
-							<TouchableOpacity style={{ left: 0, marginLeft: 24, marginTop: 4 }}>
-								<Text style={{  }}>Cancel</Text>
+						style={[
+							styles.datePickerCon,
+							{ transform: [{translateY: this.state.animatedTranslateY }] },
+						]}
+					>
+						<View style={{ backgroundColor: '#fff', flex: 1, flexDirection: 'row', height: IOS_DATEPICKER_HEIGHT, alignContent: 'center' }}>
+							<TouchableOpacity style={{ left: 0, marginLeft: 24, marginTop: 8, height: '100%' }} onPress={() => this._cancelHandler()}>
+								<Text style={{ color: IOS_DEFAULT_TINT_COLOR, fontWeight: '600' }}>Cancel</Text>
 							</TouchableOpacity>
-							<TouchableOpacity style={{ right: 0, marginRight: 24, marginTop: 4, position: 'absolute' }}>
-								<Text style={{  }}>Confirm</Text>
+							<TouchableOpacity style={{ right: 0, marginRight: 24, marginTop: 8, position: 'absolute', height: '100%' }} onPress={() => this._onPressConfirm()}>
+								<Text style={{ color: IOS_DEFAULT_TINT_COLOR, fontWeight: '600' }}>Confirm</Text>
 							</TouchableOpacity>
 						</View>
 						{DateTimePicker}
 					</Animated.View>
 				</Animated.View>
-				
 				</View>
 			</Modal>
 		);
@@ -119,7 +119,6 @@ class DatePicker extends React.Component<IProps> {
 
 	public UNSAFE_componentWillReceiveProps(nextProps: IProps) {
 		const { visible } = nextProps;
-		console.log(visible)
 		if (this.state.visible !== visible) {
 			visible ? this._showDatePicker() : this._hideDatePicker();
 		}
@@ -130,8 +129,12 @@ class DatePicker extends React.Component<IProps> {
 			return this._cancelHandler();
 		}
 
-		const dateStr = dateToStr(date, this.props.format || DefaultFormat[this.props.mode]);
 		this.setState({ date });
+	}
+
+	private _onPressConfirm() {
+		const date = this.state.date;
+		const dateStr = dateToStr(date, this.props.format || DefaultFormat[this.props.mode]);
 		this.props.onDateChange(date, dateStr);
 	}
 
