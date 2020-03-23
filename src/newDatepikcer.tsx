@@ -1,5 +1,7 @@
 import * as React from 'react';
-import RNDateTimePicker, { Event } from '@react-native-community/datetimepicker';
+import RNDateTimePicker, {
+	Event,
+} from '@react-native-community/datetimepicker';
 import {
 	Platform,
 	TouchableWithoutFeedback,
@@ -8,17 +10,18 @@ import {
 	Modal,
 	View,
 	Text,
-	Button
+	Button,
 } from 'react-native';
 import * as moment from 'moment';
 import styles, { IOS_DATEPICKER_HEIGHT } from './style';
+const IOS_DEFAULT_TINT_COLOR = '#007AFF';
 
 export interface IProps {
 	visible?: boolean;
 	format?: string;
 	mode: Mode;
 	minuteInterval?: MinuteInterval;
-	onDateChange: (date: Date, dateStr: string) => any;
+	onDateChange: (date?: Date, dateStr?: string) => any;
 	date: string | Date;
 }
 
@@ -49,8 +52,25 @@ const SUPPORTED_ORIENTATIONS: SupportedOrientations[] = [
 	'landscape-right',
 ];
 type Mode = 'date' | 'datetime' | 'time';
-type SupportedOrientations = 'portrait' | 'portrait-upside-down' | 'landscape' | 'landscape-left' | 'landscape-right';
-type MinuteInterval = 1 | 2 | 3 | 4 | 5 | 6 | 10 | 12 | 15 | 20 | 30 | undefined;
+type SupportedOrientations =
+	| 'portrait'
+	| 'portrait-upside-down'
+	| 'landscape'
+	| 'landscape-left'
+	| 'landscape-right';
+type MinuteInterval =
+	| 1
+	| 2
+	| 3
+	| 4
+	| 5
+	| 6
+	| 10
+	| 12
+	| 15
+	| 20
+	| 30
+	| undefined;
 
 class DatePicker extends React.Component<IProps> {
 	public static defaultProps: IDeafaultProps = {
@@ -63,10 +83,10 @@ class DatePicker extends React.Component<IProps> {
 
 	constructor(props: IProps) {
 		super(props);
-		const firstOpacity = (props.visible) ? 1 : 0;
-		const firstTranslateY = (props.visible) ? 0 : IOS_DATEPICKER_HEIGHT;
+		const firstOpacity = props.visible ? 1 : 0;
+		const firstTranslateY = props.visible ? 0 : IOS_DATEPICKER_HEIGHT;
 		this.state = {
-			visible: (props.visible === true) ? true : false,
+			visible: props.visible === true ? true : false,
 			date: props.date ? new Date(props.date) : new Date(),
 			animatedOpacity: new Animated.Value(firstOpacity),
 			animatedTranslateY: new Animated.Value(firstTranslateY),
@@ -79,9 +99,11 @@ class DatePicker extends React.Component<IProps> {
 				value={this.state.date}
 				minuteInterval={this.props.minuteInterval}
 				onChange={(event, date) => this._onDateChange(event, date)}
-			/>);
-		return !this.state.visible ? null : (
-			Platform.OS === 'android' ? DateTimePicker :
+			/>
+		);
+		return !this.state.visible ? null : Platform.OS === 'android' ? (
+			DateTimePicker
+		) : (
 			<Modal
 				transparent={true}
 				animationType="none"
@@ -90,27 +112,66 @@ class DatePicker extends React.Component<IProps> {
 				onRequestClose={() => this._hideModal()}
 			>
 				<View style={{ flex: 1 }}>
-				<Animated.View style={{flex: 1, backgroundColor: '#000000', opacity: this.state.animatedOpacity}}>
-					<TouchableWithoutFeedback onPress={() => this._cancelHandler()}>
-						<View style={{ flex: 1 }}></View>
-					</TouchableWithoutFeedback>
 					<Animated.View
-					style={[
-						styles.datePickerCon,
-						{ transform: [{translateY: this.state.animatedTranslateY }] },
-					]}
-				>
-						<View style={{ backgroundColor: '#fff', flex: 1, flexDirection: 'row', height: IOS_DATEPICKER_HEIGHT }}>
-							<TouchableOpacity style={{ left: 0, marginLeft: 24, marginTop: 4 }}>
-								<Text style={{  }}>Cancel</Text>
-							</TouchableOpacity>
-							<TouchableOpacity style={{ right: 0, marginRight: 24, marginTop: 4, position: 'absolute' }}>
-								<Text style={{  }}>Confirm</Text>
-							</TouchableOpacity>
-						</View>
-						{DateTimePicker}
+						style={{
+							flex: 1,
+							backgroundColor: '#000000',
+							opacity: this.state.animatedOpacity,
+						}}
+					>
+						<TouchableWithoutFeedback onPress={() => this._cancelHandler()}>
+							<View style={{ flex: 1 }}></View>
+						</TouchableWithoutFeedback>
+						<Animated.View
+							style={[
+								styles.datePickerCon,
+								{ transform: [{ translateY: this.state.animatedTranslateY }] },
+							]}
+						>
+							<View
+								style={{
+									backgroundColor: '#fff',
+									flex: 1,
+									flexDirection: 'row',
+									height: IOS_DATEPICKER_HEIGHT,
+									alignContent: 'center',
+								}}
+							>
+								<TouchableOpacity
+									style={{
+										left: 0,
+										marginLeft: 24,
+										marginTop: 8,
+										height: '100%',
+									}}
+									onPress={() => this._cancelHandler()}
+								>
+									<Text
+										style={{ color: IOS_DEFAULT_TINT_COLOR, fontWeight: '600' }}
+									>
+										Cancel
+									</Text>
+								</TouchableOpacity>
+								<TouchableOpacity
+									style={{
+										right: 0,
+										marginRight: 24,
+										marginTop: 8,
+										position: 'absolute',
+										height: '100%',
+									}}
+									onPress={() => this._onPressConfirm()}
+								>
+									<Text
+										style={{ color: IOS_DEFAULT_TINT_COLOR, fontWeight: '600' }}
+									>
+										Confirm
+									</Text>
+								</TouchableOpacity>
+							</View>
+							{DateTimePicker}
+						</Animated.View>
 					</Animated.View>
-				</Animated.View>
 				</View>
 			</Modal>
 		);
@@ -124,12 +185,20 @@ class DatePicker extends React.Component<IProps> {
 	}
 
 	private _onDateChange(event: Event, date: Date | undefined) {
-		if (date === undefined) { // dismissAction
+		if (date === undefined) {
+			// dismissAction
 			return this._cancelHandler();
 		}
 
-		const dateStr = dateToStr(date, this.props.format || DefaultFormat[this.props.mode]);
 		this.setState({ date });
+	}
+
+	private _onPressConfirm() {
+		const date = this.state.date;
+		const dateStr = dateToStr(
+			date,
+			this.props.format || DefaultFormat[this.props.mode]
+		);
 		this.props.onDateChange(date, dateStr);
 	}
 
@@ -173,20 +242,14 @@ class DatePicker extends React.Component<IProps> {
 			this.setState({ visible: true });
 		}
 		Animated.parallel([
-			Animated.timing(
-				this.state.animatedTranslateY,
-				{
-					toValue: (isShow) ? SHOW_TRANSLATE_Y : HIDE_TRANSLATE_Y,
-					duration: ANIMATION_DURATION,
-				},
-			),
-			Animated.timing(
-				this.state.animatedOpacity,
-				{
-					toValue: (isShow) ? SHOW_OPACITY : HIDE_OPACITY,
-					duration: ANIMATION_DURATION,
-				},
-			),
+			Animated.timing(this.state.animatedTranslateY, {
+				toValue: isShow ? SHOW_TRANSLATE_Y : HIDE_TRANSLATE_Y,
+				duration: ANIMATION_DURATION,
+			}),
+			Animated.timing(this.state.animatedOpacity, {
+				toValue: isShow ? SHOW_OPACITY : HIDE_OPACITY,
+				duration: ANIMATION_DURATION,
+			}),
 		]).start(() => {
 			if (!isShow) {
 				this.setState({ visible: false });
