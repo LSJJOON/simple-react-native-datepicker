@@ -1,7 +1,5 @@
 import * as React from 'react';
-import RNDateTimePicker, {
-	Event,
-} from '@react-native-community/datetimepicker';
+import RNDateTimePicker, { Event } from '@react-native-community/datetimepicker';
 import {
 	Platform,
 	TouchableWithoutFeedback,
@@ -52,25 +50,8 @@ const SUPPORTED_ORIENTATIONS: SupportedOrientations[] = [
 	'landscape-right',
 ];
 type Mode = 'date' | 'datetime' | 'time';
-type SupportedOrientations =
-	| 'portrait'
-	| 'portrait-upside-down'
-	| 'landscape'
-	| 'landscape-left'
-	| 'landscape-right';
-type MinuteInterval =
-	| 1
-	| 2
-	| 3
-	| 4
-	| 5
-	| 6
-	| 10
-	| 12
-	| 15
-	| 20
-	| 30
-	| undefined;
+type SupportedOrientations = 'portrait' | 'portrait-upside-down' | 'landscape' | 'landscape-left' | 'landscape-right';
+type MinuteInterval = 1 | 2 | 3 | 4 | 5 | 6 | 10 | 12 | 15 | 20 | 30 | undefined;
 
 class DatePicker extends React.Component<IProps> {
 	public static defaultProps: IDeafaultProps = {
@@ -123,10 +104,7 @@ class DatePicker extends React.Component<IProps> {
 							<View style={{ flex: 1 }}></View>
 						</TouchableWithoutFeedback>
 						<Animated.View
-							style={[
-								styles.datePickerCon,
-								{ transform: [{ translateY: this.state.animatedTranslateY }] },
-							]}
+							style={[styles.datePickerCon, { transform: [{ translateY: this.state.animatedTranslateY }] }]}
 						>
 							<View
 								style={{
@@ -146,11 +124,7 @@ class DatePicker extends React.Component<IProps> {
 									}}
 									onPress={() => this._cancelHandler()}
 								>
-									<Text
-										style={{ color: IOS_DEFAULT_TINT_COLOR, fontWeight: '600' }}
-									>
-										Cancel
-									</Text>
+									<Text style={{ color: IOS_DEFAULT_TINT_COLOR, fontWeight: '600' }}>Cancel</Text>
 								</TouchableOpacity>
 								<TouchableOpacity
 									style={{
@@ -160,13 +134,9 @@ class DatePicker extends React.Component<IProps> {
 										position: 'absolute',
 										height: '100%',
 									}}
-									onPress={() => this._onPressConfirm()}
+									onPress={() => this._submitDate()}
 								>
-									<Text
-										style={{ color: IOS_DEFAULT_TINT_COLOR, fontWeight: '600' }}
-									>
-										Confirm
-									</Text>
+									<Text style={{ color: IOS_DEFAULT_TINT_COLOR, fontWeight: '600' }}>Confirm</Text>
 								</TouchableOpacity>
 							</View>
 							{DateTimePicker}
@@ -186,19 +156,19 @@ class DatePicker extends React.Component<IProps> {
 
 	private _onDateChange(event: Event, date: Date | undefined) {
 		if (date === undefined) {
-			// dismissAction
 			return this._cancelHandler();
 		}
+		const nextState = { date, visible: Platform.OS === 'ios' };
 
-		this.setState({ date });
+		this.setState(nextState);
+		if (Platform.OS === 'android') {
+			this._submitDate();
+		}
 	}
 
-	private _onPressConfirm() {
+	private _submitDate() {
 		const date = this.state.date;
-		const dateStr = dateToStr(
-			date,
-			this.props.format || DefaultFormat[this.props.mode]
-		);
+		const dateStr = dateToStr(date, this.props.format || DefaultFormat[this.props.mode]);
 		this.props.onDateChange(date, dateStr);
 	}
 
