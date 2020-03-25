@@ -1,15 +1,6 @@
 import * as React from 'react';
 import RNDateTimePicker, { Event } from '@react-native-community/datetimepicker';
-import {
-	Platform,
-	TouchableWithoutFeedback,
-	TouchableOpacity,
-	Animated,
-	Modal,
-	View,
-	Text,
-	Button,
-} from 'react-native';
+import { Platform, TouchableWithoutFeedback, TouchableOpacity, Animated, Modal, View, Text } from 'react-native';
 import * as moment from 'moment';
 import styles, { IOS_DATEPICKER_HEIGHT } from './style';
 const IOS_DEFAULT_TINT_COLOR = '#007AFF';
@@ -21,6 +12,13 @@ export interface IProps {
 	minuteInterval?: MinuteInterval;
 	onDateChange: (date?: Date, dateStr?: string) => any;
 	date: string | Date;
+	display?: Display;
+	maximumDate?: Date;
+	minimumDate?: Date;
+	timeZoneOffsetInMinutes?: number;
+	textColor?: string;
+	locale?: string;
+	is24Hour?: boolean;
 }
 
 enum DefaultFormat {
@@ -49,9 +47,10 @@ const SUPPORTED_ORIENTATIONS: SupportedOrientations[] = [
 	'landscape-left',
 	'landscape-right',
 ];
-type Mode = 'date' | 'datetime' | 'time';
+type Mode = 'date' | 'datetime' | 'time' | 'countdown';
 type SupportedOrientations = 'portrait' | 'portrait-upside-down' | 'landscape' | 'landscape-left' | 'landscape-right';
 type MinuteInterval = 1 | 2 | 3 | 4 | 5 | 6 | 10 | 12 | 15 | 20 | 30 | undefined;
+type Display = 'default' | 'calendar' | 'spinner' | 'clock';
 
 class DatePicker extends React.Component<IProps> {
 	public static defaultProps: IDeafaultProps = {
@@ -75,11 +74,29 @@ class DatePicker extends React.Component<IProps> {
 	}
 
 	public render() {
+		const {
+			mode,
+			display,
+			minimumDate,
+			maximumDate,
+			timeZoneOffsetInMinutes,
+			textColor,
+			locale,
+			is24Hour,
+		} = this.props;
 		const DateTimePicker = (
 			<RNDateTimePicker
 				value={this.state.date}
 				minuteInterval={this.props.minuteInterval}
 				onChange={(event, date) => this._onDateChange(event, date)}
+				mode={mode}
+				display={display}
+				maximumDate={maximumDate}
+				minimumDate={minimumDate}
+				timeZoneOffsetInMinutes={timeZoneOffsetInMinutes}
+				textColor={textColor}
+				locale={locale}
+				is24Hour={is24Hour}
 			/>
 		);
 		return !this.state.visible ? null : Platform.OS === 'android' ? (
