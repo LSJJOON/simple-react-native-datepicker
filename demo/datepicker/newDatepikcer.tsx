@@ -1,6 +1,16 @@
 import * as React from 'react';
 import RNDateTimePicker, { Event } from '@react-native-community/datetimepicker';
-import { Platform, TouchableWithoutFeedback, TouchableOpacity, Animated, Modal, View, Text } from 'react-native';
+import {
+	Platform,
+	TouchableWithoutFeedback,
+	TouchableOpacity,
+	Animated,
+	Modal,
+	View,
+	Text,
+	StyleProp,
+	TextStyle,
+} from 'react-native';
 import * as moment from 'moment';
 import styles, { IOS_DATEPICKER_HEIGHT } from './style';
 const IOS_DEFAULT_TINT_COLOR = '#007AFF';
@@ -19,6 +29,10 @@ export interface IProps {
 	textColor?: string;
 	locale?: string;
 	is24Hour?: boolean;
+	confirmText?: string;
+	cancelText?: string;
+	confirmTextStyle?: StyleProp<TextStyle>;
+	cancelTextStyle?: StyleProp<TextStyle>;
 }
 
 enum DefaultFormat {
@@ -31,6 +45,8 @@ export interface IDeafaultProps {
 	visible: boolean;
 	mode: Mode;
 	date: string | Date;
+	confirmText: string;
+	cancelText: string;
 }
 
 interface IState {
@@ -57,6 +73,8 @@ class DatePicker extends React.Component<IProps> {
 		visible: true,
 		mode: 'date',
 		date: new Date(),
+		confirmText: 'Confirm',
+		cancelText: 'Cancel',
 	};
 
 	public readonly state: IState;
@@ -83,6 +101,10 @@ class DatePicker extends React.Component<IProps> {
 			textColor,
 			locale,
 			is24Hour,
+			confirmText,
+			cancelText,
+			confirmTextStyle,
+			cancelTextStyle,
 		} = this.props;
 		const DateTimePicker = (
 			<RNDateTimePicker
@@ -141,7 +163,7 @@ class DatePicker extends React.Component<IProps> {
 									}}
 									onPress={() => this._cancelHandler()}
 								>
-									<Text style={{ color: IOS_DEFAULT_TINT_COLOR, fontWeight: '600' }}>Cancel</Text>
+									<Text style={[{ color: 'red', fontWeight: '600' }, cancelTextStyle]}>{cancelText}</Text>
 								</TouchableOpacity>
 								<TouchableOpacity
 									style={{
@@ -153,7 +175,9 @@ class DatePicker extends React.Component<IProps> {
 									}}
 									onPress={() => this._submitDate()}
 								>
-									<Text style={{ color: IOS_DEFAULT_TINT_COLOR, fontWeight: '600' }}>Confirm</Text>
+									<Text style={[{ color: IOS_DEFAULT_TINT_COLOR, fontWeight: '600' }, confirmTextStyle]}>
+										{confirmText}
+									</Text>
 								</TouchableOpacity>
 							</View>
 							{DateTimePicker}

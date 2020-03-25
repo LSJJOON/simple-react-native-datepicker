@@ -25,6 +25,8 @@ class App extends Component {
 						visible={this.state.visible}
 						onDateChange={(date) => this.setState({ date, visible: false })}
 						date={this.state.date}
+						cancelTextStyle={{ color: 'red' }}
+						textColor="red"
 					/>
 				</View>
 			</SafeAreaView>
