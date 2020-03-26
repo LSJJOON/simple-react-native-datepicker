@@ -7,7 +7,7 @@ import DatePciker from './datepicker/newDatepikcer';
 class App extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { date: new Date(), dateTime: '', time: '', visible: false };
+		this.state = { date: '', dateTime: '', time: '', visible: false };
 	}
 	public render() {
 		return (
@@ -27,6 +27,7 @@ class App extends Component {
 						date={this.state.date}
 						cancelTextStyle={{ color: 'red' }}
 						textColor="red"
+						format="YYYY[year] MM[month]"
 					/>
 				</View>
 			</SafeAreaView>

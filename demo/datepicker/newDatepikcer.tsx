@@ -11,7 +11,7 @@ import {
 	StyleProp,
 	TextStyle,
 } from 'react-native';
-import * as moment from 'moment';
+import moment from 'moment';
 import styles, { IOS_DATEPICKER_HEIGHT } from './style';
 const IOS_DEFAULT_TINT_COLOR = '#007AFF';
 
@@ -20,7 +20,7 @@ export interface IProps {
 	format?: string;
 	mode: Mode;
 	minuteInterval?: MinuteInterval;
-	onDateChange: (date?: Date, dateStr?: string) => any;
+	onDateChange: (dateStr?: string, date?: Date) => any;
 	date: string | Date;
 	display?: Display;
 	maximumDate?: Date;
@@ -210,11 +210,11 @@ class DatePicker extends React.Component<IProps> {
 	private _submitDate() {
 		const date = this.state.date;
 		const dateStr = dateToStr(date, this.props.format || DefaultFormat[this.props.mode]);
-		this.props.onDateChange(date, dateStr);
+		this.props.onDateChange(dateStr, date);
 	}
 
 	private _cancelHandler() {
-		this.props.onDateChange(undefined, undefined);
+		this.props.onDateChange();
 	}
 
 	private _showDatePicker() {
@@ -269,8 +269,8 @@ class DatePicker extends React.Component<IProps> {
 	}
 }
 
-export function dateToStr(date: Date, format?: string | undefined): string {
-	return '';
+export function dateToStr(date: Date, format: string): string {
+	return moment(date).format(format);
 }
 
 export default DatePicker;
