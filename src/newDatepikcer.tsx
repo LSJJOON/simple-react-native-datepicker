@@ -10,10 +10,11 @@ import {
 	Text,
 	StyleProp,
 	TextStyle,
+	StyleSheet,
 } from 'react-native';
 import moment from 'moment';
-import styles, { IOS_DATEPICKER_HEIGHT } from './style';
 const IOS_DEFAULT_TINT_COLOR = '#007AFF';
+const IOS_DATEPICKER_HEIGHT = 259;
 
 export interface IProps {
 	visible: boolean;
@@ -131,53 +132,27 @@ class DatePicker extends React.Component<IProps> {
 				supportedOrientations={SUPPORTED_ORIENTATIONS}
 				onRequestClose={() => this._hideModal()}
 			>
-				<View style={{ flex: 1 }}>
+				<View style={styles.container}>
 					<Animated.View
-						style={{
-							flex: 1,
-							backgroundColor: '#000000',
-							opacity: this.state.animatedOpacity,
-						}}
+						style={[
+							styles.blackBackLayer,
+							{
+								opacity: this.state.animatedOpacity,
+							},
+						]}
 					>
 						<TouchableWithoutFeedback onPress={() => this._cancelHandler()}>
-							<View style={{ flex: 1 }}></View>
+							<View style={styles.touchableBackLayer}></View>
 						</TouchableWithoutFeedback>
 						<Animated.View
-							style={[styles.datePickerCon, { transform: [{ translateY: this.state.animatedTranslateY }] }]}
+							style={[styles.iosBottomContainer, { transform: [{ translateY: this.state.animatedTranslateY }] }]}
 						>
-							<View
-								style={{
-									backgroundColor: '#fff',
-									flex: 1,
-									flexDirection: 'row',
-									height: IOS_DATEPICKER_HEIGHT,
-									alignContent: 'center',
-								}}
-							>
-								<TouchableOpacity
-									style={{
-										left: 0,
-										marginLeft: 24,
-										marginTop: 8,
-										height: '100%',
-									}}
-									onPress={() => this._cancelHandler()}
-								>
-									<Text style={[{ color: 'red', fontWeight: '600' }, cancelTextStyle]}>{cancelText}</Text>
+							<View style={styles.iosButtonContainer}>
+								<TouchableOpacity style={styles.cancelButton} onPress={() => this._cancelHandler()}>
+									<Text style={[styles.defaultCancelTxt, cancelTextStyle]}>{cancelText}</Text>
 								</TouchableOpacity>
-								<TouchableOpacity
-									style={{
-										right: 0,
-										marginRight: 24,
-										marginTop: 8,
-										position: 'absolute',
-										height: '100%',
-									}}
-									onPress={() => this._submitDate()}
-								>
-									<Text style={[{ color: IOS_DEFAULT_TINT_COLOR, fontWeight: '600' }, confirmTextStyle]}>
-										{confirmText}
-									</Text>
+								<TouchableOpacity style={styles.confirmButton} onPress={() => this._submitDate()}>
+									<Text style={[styles.defaultConfirmTxt, confirmTextStyle]}>{confirmText}</Text>
 								</TouchableOpacity>
 							</View>
 							{DateTimePicker}
@@ -214,7 +189,7 @@ class DatePicker extends React.Component<IProps> {
 	}
 
 	private _cancelHandler() {
-		this.props.onDateChange(undefined, undefined);
+		this.props.onDateChange();
 	}
 
 	private _showDatePicker() {
@@ -272,5 +247,33 @@ class DatePicker extends React.Component<IProps> {
 export function dateToStr(date: Date, format: string): string {
 	return moment(date).format(format);
 }
+
+const styles = StyleSheet.create({
+	container: { flex: 1 },
+	blackBackLayer: { flex: 1, backgroundColor: '#000000' },
+	touchableBackLayer: { flex: 1 },
+	iosBottomContainer: { backgroundColor: '#fff', height: IOS_DATEPICKER_HEIGHT },
+	iosButtonContainer: {
+		backgroundColor: '#fff',
+		flex: 1,
+		flexDirection: 'row',
+		alignContent: 'center',
+	},
+	cancelButton: {
+		left: 0,
+		marginLeft: 24,
+		marginTop: 8,
+		height: '100%',
+	},
+	confirmButton: {
+		right: 0,
+		marginRight: 24,
+		marginTop: 8,
+		position: 'absolute',
+		height: '100%',
+	},
+	defaultCancelTxt: { color: '#0a0a0a', fontWeight: '600' },
+	defaultConfirmTxt: { color: IOS_DEFAULT_TINT_COLOR, fontWeight: '600' },
+});
 
 export default DatePicker;
