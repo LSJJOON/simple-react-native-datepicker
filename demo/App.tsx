@@ -4,17 +4,23 @@ import { View, SafeAreaView, Text, Button } from 'react-native';
 // import DateTimePicker from '@react-native-community/datetimepicker
 import DatePciker from './datepicker/newDatepikcer';
 
-class App extends Component {
-	constructor(props) {
+interface IState {
+	visible: boolean;
+	dateStr?: string;
+	date?: Date;
+}
+
+class App extends Component<{}, IState> {
+	constructor(props: {}) {
 		super(props);
-		this.state = { date: '', dateTime: '', time: '', visible: false };
+		this.state = { dateStr: '', date: new Date(), visible: false };
 	}
 	public render() {
 		return (
 			<SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
 				<View>
 					<Text style={{ marginBottom: 20 }}>Hello! simple date picker!</Text>
-					<Text style={{ marginBottom: 20 }}>time is {String(this.state.date)}</Text>
+					<Text style={{ marginBottom: 20 }}>time is {String(this.state.dateStr)}</Text>
 					<Button
 						onPress={() => {
 							this.setState({ visible: true });
@@ -23,10 +29,8 @@ class App extends Component {
 					/>
 					<DatePciker
 						visible={this.state.visible}
-						onDateChange={(date) => this.setState({ date, visible: false })}
+						onDateChange={(dateStr, date) => this.setState({ dateStr, date, visible: false })}
 						date={this.state.date}
-						textColor="red"
-						format="YYYY[year] MM[month]"
 					/>
 				</View>
 			</SafeAreaView>

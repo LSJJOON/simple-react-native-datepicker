@@ -15,35 +15,68 @@ import {
 import moment from 'moment';
 const IOS_DEFAULT_TINT_COLOR = '#007AFF';
 const IOS_DATEPICKER_HEIGHT = 259;
+const SHOW_OPACITY = 0.7;
+const HIDE_OPACITY = 0;
+const SHOW_TRANSLATE_Y = 0;
+const HIDE_TRANSLATE_Y = IOS_DATEPICKER_HEIGHT;
 
-export interface IProps {
+interface IBaseProps {
 	visible: boolean;
 	format?: string;
-	mode: Mode;
-	minuteInterval?: MinuteInterval;
 	onDateChange: (dateStr?: string, date?: Date) => any;
 	date: string | Date;
-	display?: Display;
 	maximumDate?: Date;
 	minimumDate?: Date;
+}
+
+interface IIOSProps extends IBaseProps {
+	mode: IOSMode;
 	timeZoneOffsetInMinutes?: number;
 	textColor?: string;
 	locale?: string;
-	is24Hour?: boolean;
+	minuteInterval?: MinuteInterval;
 	confirmText?: string;
 	cancelText?: string;
 	confirmTextStyle?: StyleProp<TextStyle>;
 	cancelTextStyle?: StyleProp<TextStyle>;
 }
 
+interface IAndroidProps extends IBaseProps {
+	mode: AndroidMode;
+	display?: Display;
+	is24Hour?: boolean;
+}
+
+export type IProps = IIOSProps | IAndroidProps;
+
+// export interface IProps {
+// 	visible: boolean;
+// 	format?: string;
+// 	mode: Mode;
+// 	minuteInterval?: MinuteInterval;
+// 	onDateChange: (dateStr?: string, date?: Date) => any;
+// 	date: string | Date;
+// 	display?: Display;
+// 	maximumDate?: Date;
+// 	minimumDate?: Date;
+// 	timeZoneOffsetInMinutes?: number;
+// 	textColor?: string;
+// 	locale?: string;
+// 	is24Hour?: boolean;
+// 	confirmText?: string;
+// 	cancelText?: string;
+// 	confirmTextStyle?: StyleProp<TextStyle>;
+// 	cancelTextStyle?: StyleProp<TextStyle>;
+// }
+
 enum DefaultFormat {
 	date = 'YYYY-MM-DD',
 	datetime = 'YYYY-MM-DD HH:mm',
 	time = 'HH:mm',
+	countdown = 'HH:mm',
 }
 
 export interface IDeafaultProps {
-	visible: boolean;
 	mode: Mode;
 	date: string | Date;
 	confirmText: string;
@@ -64,14 +97,15 @@ const SUPPORTED_ORIENTATIONS: SupportedOrientations[] = [
 	'landscape-left',
 	'landscape-right',
 ];
-type Mode = 'date' | 'datetime' | 'time' | 'countdown';
+type IOSMode = 'date' | 'datetime' | 'time' | 'countdown';
+type AndroidMode = 'date' | 'time';
+type Mode = IOSMode | AndroidMode;
 type SupportedOrientations = 'portrait' | 'portrait-upside-down' | 'landscape' | 'landscape-left' | 'landscape-right';
 type MinuteInterval = 1 | 2 | 3 | 4 | 5 | 6 | 10 | 12 | 15 | 20 | 30 | undefined;
 type Display = 'default' | 'calendar' | 'spinner' | 'clock';
 
 class DatePicker extends React.Component<IProps> {
 	public static defaultProps: IDeafaultProps = {
-		visible: true,
 		mode: 'date',
 		date: new Date(),
 		confirmText: 'Confirm',
@@ -82,8 +116,8 @@ class DatePicker extends React.Component<IProps> {
 
 	constructor(props: IProps) {
 		super(props);
-		const firstOpacity = props.visible ? 1 : 0;
-		const firstTranslateY = props.visible ? 0 : IOS_DATEPICKER_HEIGHT;
+		const firstOpacity = props.visible ? SHOW_OPACITY : HIDE_OPACITY;
+		const firstTranslateY = props.visible ? SHOW_TRANSLATE_Y : HIDE_TRANSLATE_Y;
 		this.state = {
 			visible: props.visible === true ? true : false,
 			date: props.date ? new Date(props.date) : new Date(),
@@ -106,19 +140,21 @@ class DatePicker extends React.Component<IProps> {
 			cancelText,
 			confirmTextStyle,
 			cancelTextStyle,
+			minuteInterval,
 		} = this.props;
+
 		const DateTimePicker = (
 			<RNDateTimePicker
 				value={this.state.date}
-				minuteInterval={this.props.minuteInterval}
+				minuteInterval={minuteInterval}
 				onChange={(event, date) => this._onDateChange(event, date)}
 				mode={mode}
-				display={display}
 				maximumDate={maximumDate}
 				minimumDate={minimumDate}
 				timeZoneOffsetInMinutes={timeZoneOffsetInMinutes}
 				textColor={textColor}
 				locale={locale}
+				display={display}
 				is24Hour={is24Hour}
 			/>
 		);
@@ -220,10 +256,7 @@ class DatePicker extends React.Component<IProps> {
 
 	private _animatedModal(isShow: boolean) {
 		const ANIMATION_DURATION = 300;
-		const SHOW_OPACITY = 0.7;
-		const HIDE_OPACITY = 0;
-		const SHOW_TRANSLATE_Y = 0;
-		const HIDE_TRANSLATE_Y = IOS_DATEPICKER_HEIGHT;
+
 		if (isShow) {
 			this.setState({ visible: true });
 		}
