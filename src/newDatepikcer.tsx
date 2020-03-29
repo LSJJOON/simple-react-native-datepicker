@@ -127,28 +127,30 @@ class DatePicker extends React.Component<IProps> {
 	}
 
 	public render() {
+		const props = this.props;
+		const { minimumDate, maximumDate } = props;
+
+		const androidProps = props as IAndroidProps;
+		const { mode: androidMode, display, is24Hour } = androidProps;
+		const iosProps = props as IIOSProps;
 		const {
-			mode,
-			display,
-			minimumDate,
-			maximumDate,
+			mode: iosMode,
 			timeZoneOffsetInMinutes,
 			textColor,
 			locale,
-			is24Hour,
 			confirmText,
 			cancelText,
 			confirmTextStyle,
 			cancelTextStyle,
 			minuteInterval,
-		} = this.props;
+		} = iosProps;
 
 		const DateTimePicker = (
 			<RNDateTimePicker
 				value={this.state.date}
 				minuteInterval={minuteInterval}
 				onChange={(event, date) => this._onDateChange(event, date)}
-				mode={mode}
+				mode={androidMode || iosMode}
 				maximumDate={maximumDate}
 				minimumDate={minimumDate}
 				timeZoneOffsetInMinutes={timeZoneOffsetInMinutes}
