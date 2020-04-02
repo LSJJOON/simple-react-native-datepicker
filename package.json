@@ -1,6 +1,6 @@
 {
 	"name": "simple-react-native-datepicker",
-	"version": "1.0.0",
+	"version": "2.0.1",
 	"description": "React Native date & time picker component for iOS and Android, Use react-native-community / react-native-datetimepicker",
 	"main": "build/datepicker.js",
 	"scripts": {
@@ -36,9 +36,6 @@
 		"jsdom": "16.2.0",
 		"jsdom-global": "3.0.2",
 		"prettier": "^2.0.1",
-		"react": "^16.12.0",
-		"react-dom": "^16.13.0",
-		"react-native": "^0.61.5",
 		"react-scripts-ts": "^3.1.0",
 		"react-test-renderer": "^16.13.0",
 		"ts-jest": "^25.2.1",
@@ -46,12 +43,16 @@
 	},
 	"peerDependencies": {
 		"react": "^16.12.0",
+		"react-dom": "^16.13.0",
 		"react-native": "^0.61.5",
 		"moment": "^2.24.0",
 		"@react-native-community/datetimepicker": "^2.3.0"
 	},
 	"dependencies": {
 		"@react-native-community/datetimepicker": "^2.3.0",
-		"moment": "^2.24.0"
+		"moment": "^2.24.0",
+		"react": "^16.12.0",
+		"react-dom": "^16.13.0",
+		"react-native": "^0.61.5"
 	}
 }

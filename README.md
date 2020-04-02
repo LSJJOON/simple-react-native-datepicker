@@ -17,10 +17,10 @@ React Native simple date & time picker component for iOS and Android, using @rea
 
 ## install
 
+> IMPORTANT - **At first, you have to install [@react-native-community/datetimepicker](https://github.com/react-native-community/datetimepicker) as a peer dependecy, and [link it](https://github.com/react-native-community/datetimepicker#getting-started)**
+
 ```bash
 npm install --save simple-react-native-datepicker
-cd ios
-pod install
 ```
 
 ## General Usage

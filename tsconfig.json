@@ -2,7 +2,7 @@
 	"compilerOptions": {
 		"outDir": "build",
 		"target": "esnext",
-    "module": "commonjs",
+		"module": "commonjs",
 		"lib": ["es6"],
 		"sourceMap": true,
 		"allowJs": false,
@@ -13,11 +13,11 @@
 		"strict": true,
 		"moduleResolution": "node",
 		"allowSyntheticDefaultImports": true,
-    "plugins": [
-      {
-        "name": "typescript-tslint-plugin"
-      }
-    ],
+		"plugins": [
+			{
+				"name": "typescript-tslint-plugin"
+			}
+		]
 	},
 	"exclude": ["node_modules", "build", "src/__tests__"],
 	"include": ["src/**/*"]

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { View, SafeAreaView, Text, Button } from 'react-native';
-// import DatePicker, { Mode } from 'simple-react-native-datepicker';
-// import DateTimePicker from '@react-native-community/datetimepicker
-import DatePciker from './datepicker/newDatepikcer';
+import DatePicker from 'simple-react-native-datepicker';
 
 interface IState {
 	visible: boolean;
@@ -22,7 +20,7 @@ class App extends Component<{}, IState> {
 					<Text style={{ marginBottom: 20 }}>Hello! simple date picker!</Text>
 					<Text style={{ marginBottom: 20 }}>time is {String(this.state.dateStr)}</Text>
 					<Button onPress={() => this.showDatePicker()} title="show" />
-					<DatePciker
+					<DatePicker
 						visible={this.state.visible}
 						onDateChange={(dateStr, date) => this.onDateChange(dateStr, date)}
 						date={this.state.date}
