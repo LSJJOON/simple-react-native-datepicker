@@ -31,9 +31,9 @@ import { View, SafeAreaView, Text, Button } from 'react-native';
 import DateTimePicker from 'simple-react-native-datepicker'
 
 interface IState {
-	visible: boolean;
-	dateStr?: string;
-	date?: Date;
+  visible: boolean;
+  dateStr?: string;
+  date?: Date;
 }
 
 class App extends Component<{}, IState> {
