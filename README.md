@@ -37,37 +37,37 @@ interface IState {
 }
 
 class App extends Component<{}, IState> {
-	constructor(props: {}) {
-		super(props);
-		this.state = { dateStr: '', date: new Date(), visible: false };
-	}
-	public render() {
-		return (
-			<SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-				<View>
-					<Text style={{ marginBottom: 20 }}>Hello! simple date picker!</Text>
-					<Text style={{ marginBottom: 20 }}>time is {String(this.state.dateStr)}</Text>
-					<Button onPress={() => this.showDatePicker()} title="show" />
-					<DatePciker
-						visible={this.state.visible}
-						onDateChange={(dateStr, date) => this.onDateChange(dateStr, date)}
-						date={this.state.date}
-					/>
-				</View>
-			</SafeAreaView>
-		);
-	}
+  constructor(props: {}) {
+    super(props);
+    this.state = { dateStr: '', date: new Date(), visible: false };
+  }
+  public render() {
+    return (
+      <SafeAreaView style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View>
+          <Text style={{ marginBottom: 20 }}>Hello! simple date picker!</Text>
+          <Text style={{ marginBottom: 20 }}>time is {String(this.state.dateStr)}</Text>
+          <Button onPress={() => this.showDatePicker()} title="show" />
+          <DatePciker
+            visible={this.state.visible}
+            onDateChange={(dateStr, date) => this.onDateChange(dateStr, date)}
+            date={this.state.date}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
-	public showDatePicker() {
-		this.setState({ visible: true });
-	}
+  public showDatePicker() {
+    this.setState({ visible: true });
+  }
 
-	public onDateChange(dateStr?: string, date?: Date) {
-		if (dateStr === undefined) {
-			dateStr = 'canceled';
-		}
-		this.setState({ dateStr, date, visible: false });
-	}
+  public onDateChange(dateStr?: string, date?: Date) {
+    if (dateStr === undefined) {
+      dateStr = 'canceled';
+    }
+    this.setState({ dateStr, date, visible: false });
+  }
 }
 
 export default App;
