@@ -160,21 +160,21 @@ class DatePicker extends React.Component<IProps> {
 						]}
 					>
 						<TouchableWithoutFeedback onPress={() => this._cancelHandler()}>
-							<View style={styles.touchableBackLayer}></View>
+							<View style={styles.touchableBackLayer} />
 						</TouchableWithoutFeedback>
-						<Animated.View
-							style={[styles.iosBottomContainer, { transform: [{ translateY: this.state.animatedTranslateY }] }]}
-						>
-							<View style={styles.iosButtonContainer}>
-								<TouchableOpacity style={styles.cancelButton} onPress={() => this._cancelHandler()}>
-									<Text style={[styles.defaultCancelTxt, cancelTextStyle]}>{cancelText}</Text>
-								</TouchableOpacity>
-								<TouchableOpacity style={styles.confirmButton} onPress={() => this._submitDate()}>
-									<Text style={[styles.defaultConfirmTxt, confirmTextStyle]}>{confirmText}</Text>
-								</TouchableOpacity>
-							</View>
-							{DateTimePicker}
-						</Animated.View>
+					</Animated.View>
+					<Animated.View
+						style={[styles.iosBottomContainer, { transform: [{ translateY: this.state.animatedTranslateY }] }]}
+					>
+						<View style={styles.iosButtonContainer}>
+							<TouchableOpacity style={styles.cancelButton} onPress={() => this._cancelHandler()}>
+								<Text style={[styles.defaultCancelTxt, cancelTextStyle]}>{cancelText}</Text>
+							</TouchableOpacity>
+							<TouchableOpacity style={styles.confirmButton} onPress={() => this._submitDate()}>
+								<Text style={[styles.defaultConfirmTxt, confirmTextStyle]}>{confirmText}</Text>
+							</TouchableOpacity>
+						</View>
+						{DateTimePicker}
 					</Animated.View>
 				</View>
 			</Modal>
@@ -267,7 +267,10 @@ const styles = StyleSheet.create({
 	container: { flex: 1 },
 	blackBackLayer: { flex: 1, backgroundColor: '#000000' },
 	touchableBackLayer: { flex: 1 },
-	iosBottomContainer: { backgroundColor: '#fff', height: IOS_DATEPICKER_HEIGHT },
+	iosBottomContainer: {
+		backgroundColor: '#fff',
+		height: IOS_DATEPICKER_HEIGHT,
+	},
 	iosButtonContainer: {
 		backgroundColor: '#fff',
 		flex: 1,
